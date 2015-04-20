@@ -19,6 +19,9 @@ var isWin = false;
 var stage = null;
 var canvas = null;
 
+var polygonGlow;
+var containerCertifBtn;
+
 var imgMsgBox_posX, imgActionButton_posX;
 
 function GS_Finish()
@@ -26,7 +29,10 @@ function GS_Finish()
 	this.GS_Finish_Init = function()
 	{
 		stage = new createjs.Stage(document.getElementById("testCanvas"));
+
+		stage.removeAllEventListeners();
 		console.log("Finish_Init()");
+		containerCertifBtn = new createjs.Container();
 
 	//	canvas = document.getElementById("testCanvas");
 	//	canvas.width = window.innerWidth; // x
@@ -48,9 +54,13 @@ function GS_Finish()
 
 		//load action button
 		var imgActionButton		= new createjs.Bitmap("assets/images/hack_button.png");
-		imgActionButton_posX = 330;
+		imgActionButton_posX = 400;
 		imgSplash.image.onload = module.setImg(stage, imgActionButton, imgActionButton_posX, 660);
+		imgActionButton.scaleX = imgActionButton.scaleY = 0.75;
 		imgActionButton.on("click",onButtonClick);
+
+		setCertifiedGlow();
+
 		setTextGetCertifiedButton();
 
 	    createjs.Ticker.setFPS(30);
@@ -85,12 +95,27 @@ function GS_Finish()
 	  stage.update();
 	}
 
+	function setCertifiedGlow()
+	{
+	  polygonGlow = new createjs.Shape();
+	  //hexShape.beginFill("#005F54").drawPolyStar(posX,posY,31,6,0,-90);
+	  polygonGlow.graphics.beginFill("#E87300");
+	  polygonGlow.graphics.moveTo(0,0).lineTo(0,50).lineTo(15,63).lineTo(277,63).lineTo(277,24).lineTo(254,0).lineTo(0,0);//.lineTo(0,0);
+	  polygonGlow.alpha = 0.01;
+	  containerCertifBtn.addChild(polygonGlow);
+		containerCertifBtn.x = 400;
+		containerCertifBtn.y = 660;
+	  stage.addChild(containerCertifBtn);
+	  stage.update();
+	}
+
+
 	function setTextGetCertifiedButton()
 	{
 	  var FINISH_TEXT_CERTIFIED = 'GET CERTIFIED';
-	  var textCertified = new createjs.Text(FINISH_TEXT_CERTIFIED, '45px Hacker', "#fff");
-	  textCertified.x = imgActionButton_posX + 200;
-	  textCertified.y = 685;
+	  var textCertified = new createjs.Text(FINISH_TEXT_CERTIFIED, '40px Hacker', "#fff");
+	  textCertified.x = imgActionButton_posX + 140;
+	  textCertified.y = 670;
 	  textCertified.textAlign = "center";
 	  //textCertified.scaleX = textCertified.scaleY = 0.75;
 	  stage.addChild(textCertified);
@@ -99,6 +124,11 @@ function GS_Finish()
 
 	//Exit the game
 	function onButtonClick(e)
+	{
+		createjs.Tween.get(polygonGlow).to({alpha:0.7},300).to({alpha:0.01});//.call(onCertifGlowFinish);
+	}
+
+	function onCertifGlowFinish()
 	{
 		window.open("http://www.visa.com", "_blank");
 		console.log(" This should exit the game!!");

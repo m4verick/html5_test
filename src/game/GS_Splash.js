@@ -90,7 +90,7 @@ function setImg(stage, img, x, y)
     img.y = y;
     //img.scaleX = img.scaleY = scale;
     stage.update();
-    indexImg++;
+//    indexImg++;
 }
 
 function onHackClick(e)

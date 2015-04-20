@@ -15,6 +15,7 @@
     this state triggered at the first time when user play the game
 */
 var stage;
+var imgSplashHackBtn;
 
 function Splash_Init()
 {
@@ -45,9 +46,10 @@ function Splash_Init()
     imgSplashCellphone.scaleX = imgSplashCellphone.scaleY = 0.6;
     imgSplashCellphone.image.onload = setImg(stage, imgSplashCellphone, imgSplashCellphoneX, imgSplashCellphoneY);
 
-    var imgSplashHackBtn = new createjs.Bitmap("assets/images/hack_button.png");
+    imgSplashHackBtn = new createjs.Bitmap("assets/images/hack_button.png");
     var imgSplashHackBtnX = 400;
     var imgSplashHackBtnY = 600;
+    imgSplashHackBtn.alpha = 1;
     imgSplashHackBtn.scaleX = imgSplashHackBtn.scaleY = 0.75;
     imgSplashHackBtn.addEventListener("click",onHackClick);
     imgSplashHackBtn.image.onload = setImg(stage, imgSplashHackBtn, imgSplashHackBtnX, imgSplashHackBtnY);
@@ -93,14 +95,17 @@ function setImg(stage, img, x, y)
 
 function onHackClick(e)
 {
+    createjs.Tween.get(imgSplashHackBtn).to({alpha:0.5},500).to({alpha:1});
     //stage.removeChildAt(3);
     //stage.removeChildAt(2);
     //stage.removeChildAt(1);
     //stage.removeChildAt(0);
+
     stage.removeAllEventListeners();
     stage.removeAllChildren();
     Gameplay_Init();
     console.log("heuahhahahahah");
+
 }
 
 /*

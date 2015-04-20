@@ -421,7 +421,7 @@ function TimerTick()
       if (!timerPause)
       {
         timer--;
-        if((timer/60) > 10)
+        if((timer/60) >= 10)
         {
           textTimer.text = "00:"+(timer/60).toFixed(0);
         }

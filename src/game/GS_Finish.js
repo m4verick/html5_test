@@ -19,6 +19,8 @@ var isWin = false;
 var stage = null;
 var canvas = null;
 
+var imgMsgBox_posX, imgActionButton_posX;
+
 function GS_Finish()
 {
 	this.GS_Finish_Init = function()
@@ -27,25 +29,27 @@ function GS_Finish()
 		console.log("Finish_Init()");
 		
 		canvas = document.getElementById("testCanvas");
-		canvas.width = window.innerWidth; // y
-		canvas.height = window.innerHeight; // x
+		canvas.width = window.innerWidth; // x
+		canvas.height = window.innerHeight; // y
 		
 		var imgSplash	= new createjs.Bitmap("assets/images/splash_bg.png");
-		imgSplash.image.onload = module.setImg(stage, imgSplash, canvas.height/2, 0);
+		imgSplash.image.onload = module.setImg(stage, imgSplash, canvas.width/3, 0);
     	
 		//load message box
 		var imgMsgBox	= new createjs.Bitmap("assets/images/message_box.png");
-		imgSplash.image.onload = module.setImg(stage, imgMsgBox, (canvas.height/2)+30, canvas.height-(canvas.height-20));
+		imgMsgBox_posX = (canvas.width/3)+30;
+		imgSplash.image.onload = module.setImg(stage, imgMsgBox, imgMsgBox_posX, canvas.height-(canvas.height-20));
     	setTextHackButton();
 
 		//load VISA certified
 		var imgVisa		= new createjs.Bitmap("assets/images/Visa_logo.png");
 		console.log("imgVisa x : " + imgVisa.image.height);
-		imgSplash.image.onload = module.setImg(stage, imgVisa, (canvas.height/2)+35, canvas.height-(canvas.height-300));	
+		imgSplash.image.onload = module.setImg(stage, imgVisa, (canvas.width/3)+35, canvas.height-(canvas.height-300));	
 
 		//load action button
 		var imgActionButton		= new createjs.Bitmap("assets/images/hack_button.png");
-		imgSplash.image.onload = module.setImg(stage, imgActionButton, (canvas.height/2)+40, canvas.height-(canvas.height-500));
+		imgActionButton_posX = (canvas.width/3)+40;
+		imgSplash.image.onload = module.setImg(stage, imgActionButton, imgActionButton_posX, canvas.height-(canvas.height-500));
 		imgActionButton.on("click",onButtonClick);
 		setTextGetCertifiedButton();
 
@@ -53,11 +57,26 @@ function GS_Finish()
 	    createjs.Ticker.addEventListener("tick",stage);
 	}
 
+	// reinit when browser width / height changed
+	/*window.addEventListener("resize", function()
+		{
+			stage.canvas.width = window.innerWidth;
+	    	stage.canvas.height = window.innerHeight;	
+			imgSplash.image.onload = module.setImg(stage, imgSplash, canvas.width/2, 0);
+			imgSplash.image.onload = module.setImg(stage, imgMsgBox, (canvas.width/2)+30, canvas.height-(canvas.height-20));
+			setTextHackButton();
+			imgSplash.image.onload = module.setImg(stage, imgVisa, (canvas.width/2)+35, canvas.height-(canvas.height-300));
+			imgSplash.image.onload = module.setImg(stage, imgActionButton, (canvas.width/2)+40, canvas.height-(canvas.height-500));
+			setTextGetCertifiedButton();
+			stage.update();
+		});
+*/
+
 	function setTextHackButton()
 	{
 	  var FINISH_TEXT_WIN_MSG_1 = 'YOU HAVE HACKED THE CODE BUT VISA HAS NOT VERIFIED YOUR IDENTITY,YOU CANNOT PROCCED \n\n WITH VISA YOUR TRANSACTION IS ALWAYS SECURED'
 	  var textHack = new createjs.Text(FINISH_TEXT_WIN_MSG_1, '26px Hacker', "#fff");
-	  textHack.x = canvas.width/2;
+	  textHack.x = imgMsgBox_posX + 150;
 	  textHack.y = canvas.height-(canvas.height-60);
 	  textHack.lineWidth = 300;
 	  textHack.textAlign = "center";
@@ -69,12 +88,12 @@ function GS_Finish()
 	function setTextGetCertifiedButton()
 	{
 	  var FINISH_TEXT_CERTIFIED = 'GET CERTIFIED';
-	  var textHack = new createjs.Text(FINISH_TEXT_CERTIFIED, '45px Hacker', "#fff");
-	  textHack.x = canvas.width-(canvas.width/2);
-	  textHack.y = canvas.height-(canvas.height-515);
-	  textHack.textAlign = "center";
-	  textHack.scaleX = textHack.scaleY = 0.75;
-	  stage.addChild(textHack);
+	  var textCertified = new createjs.Text(FINISH_TEXT_CERTIFIED, '45px Hacker', "#fff");
+	  textCertified.x = imgActionButton_posX + 140;
+	  textCertified.y = canvas.height-(canvas.height-515);
+	  textCertified.textAlign = "center";
+	  textCertified.scaleX = textCertified.scaleY = 0.75;
+	  stage.addChild(textCertified);
 	  stage.update();
 	}
 

@@ -104,7 +104,6 @@ function onHackClick(e)
     stage.removeAllEventListeners();
     stage.removeAllChildren();
     Gameplay_Init();
-    console.log("heuahhahahahah");
 
 }
 

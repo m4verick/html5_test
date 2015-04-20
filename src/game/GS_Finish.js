@@ -28,9 +28,9 @@ function GS_Finish()
 		stage = new createjs.Stage(document.getElementById("testCanvas"));
 		console.log("Finish_Init()");
 
-		canvas = document.getElementById("testCanvas");
-		canvas.width = window.innerWidth; // x
-		canvas.height = window.innerHeight; // y
+	//	canvas = document.getElementById("testCanvas");
+	//	canvas.width = window.innerWidth; // x
+	//	canvas.height = window.innerHeight; // y
 
 		var imgSplash	= new createjs.Bitmap("assets/images/splash_bg.png");
 		imgSplash.image.onload = module.setImg(stage, imgSplash, 300, 0);
@@ -38,7 +38,7 @@ function GS_Finish()
 		//load message box
 		var imgMsgBox	= new createjs.Bitmap("assets/images/message_box.png");
 		imgMsgBox_posX = 330;
-		imgSplash.image.onload = module.setImg(stage, imgMsgBox, imgMsgBox_posX, canvas.height-(canvas.height-20));
+		imgSplash.image.onload = module.setImg(stage, imgMsgBox, imgMsgBox_posX, 20);
     setTextHackButton();
 
 		//load VISA certified

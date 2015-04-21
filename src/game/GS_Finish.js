@@ -57,7 +57,7 @@ function GS_Finish()
 		imgActionButton_posX = 400;
 		imgSplash.image.onload = module.setImg(stage, imgActionButton, imgActionButton_posX, 660);
 		imgActionButton.scaleX = imgActionButton.scaleY = 0.75;
-		imgActionButton.on("click",onButtonClick);
+		imgActionButton.addEventListener("click",onButtonClick);
 
 		setCertifiedGlow();
 
@@ -125,7 +125,7 @@ function GS_Finish()
 	//Exit the game
 	function onButtonClick(e)
 	{
-		createjs.Tween.get(polygonGlow).to({alpha:0.7},300).to({alpha:0.01});//.call(onCertifGlowFinish);
+		createjs.Tween.get(polygonGlow).to({alpha:0.7},300).to({alpha:0.01}).call(onCertifGlowFinish);
 	}
 
 	function onCertifGlowFinish()

@@ -411,7 +411,7 @@ function generateDigitCombination()
     inc++;
   }
   console.log(digitCombination.toString());
-  
+
 }
 
 function TimerTick()
@@ -435,9 +435,9 @@ function TimerTick()
       }
       else
       {
-        createjs.Ticker.setPaused(true);
+        //createjs.Ticker.setPaused(true);
         //comment below for a while
-
+        //createjs.Ticker.removeAllEventListeners();
         stage.removeAllEventListeners();
         stage.removeAllChildren();
         GS_Finish.GS_Finish_Init();
@@ -445,9 +445,10 @@ function TimerTick()
   }
   else
   {
-    createjs.Ticker.setPaused(true);
+    //createjs.Ticker.setPaused(true);
     //comment below for a while
 
+    //createjs.Ticker.removeAllEventListeners();
     stage.removeAllEventListeners();
     stage.removeAllChildren();
     GS_Finish.GS_Finish_Init();

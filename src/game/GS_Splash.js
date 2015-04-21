@@ -58,7 +58,7 @@ function Splash_Init()
 
     setHackGlow();
 
-    setTextHackButton();
+    setTextHackPreButton();
 
     createjs.Ticker.setFPS(30);
     createjs.Ticker.addEventListener("tick",stage);
@@ -94,7 +94,7 @@ function setContainerStart()
   stage.update();
 }
 
-function setTextHackButton()
+function setTextHackPreButton()
 {
   var textHack = new createjs.Text('HACK', '70px Hacker', "#FFFFFF");
   textHack.x = 480;

@@ -49,10 +49,10 @@ function module()
 	this.setImg = function(stage, img, x, y)
 	{
 		//scale = Math.min(canvas.width/768,canvas.height/1024);
-		scale = this.resize(mainCanvas, 768, 1024);
-		img.scaleX = img.scaleY = scale;
+		//scale = this.resize(mainCanvas, 768, 1024);
+		//img.scaleX = img.scaleY = scale;
 		//this.MoveToCenterX(img, mainCanvas.width-img.width);
-		this.MoveToCenterX(img, 500-img.width);
+		//this.MoveToCenterX(img, 500-img.width);
 		stage.addChild(img);
 		img.x = x;
 		img.y = y;

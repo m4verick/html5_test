@@ -309,7 +309,7 @@ function onHexClick(e)
     var target = e.target;
     //while(e.target)
     //{
-      console.log("target name : "+target.name);
+     // console.log("target name : "+target.name);
       //console.log("huehwu : "+containerbox.getChildAt(e.target.index));
       glowTouch(target);
       if (digitCombination[digitIndex] == target.name)
@@ -320,14 +320,14 @@ function onHexClick(e)
           if(result.toString() == digitCombination.toString())
           {
 
-            console.log("BENAR");
+            //console.log("BENAR");
             //console.log(result.toString());
             roundStageIncrease();
             initArrayUser();
             if (roundStage == USER_LEVEL)
             {
               timerPause = true;
-              console.log("JUARAAAAAA LEVELLLLLLL");
+              //console.log("JUARAAAAAA LEVELLLLLLL");
             }
           }
       }
@@ -335,12 +335,12 @@ function onHexClick(e)
       {
           if (roundStage != -1)
           {
-              console.log("roudnsatage : "+roundStage);
+              //console.log("roudnsatage : "+roundStage);
               roundStageDecrease();
           }
           else
           {
-              console.log("roudnsatage : "+roundStage);
+              //console.log("roudnsatage : "+roundStage);
               timerPause = true;
           }
       }
@@ -411,6 +411,7 @@ function generateDigitCombination()
     inc++;
   }
   console.log(digitCombination.toString());
+  
 }
 
 function TimerTick()
@@ -421,7 +422,7 @@ function TimerTick()
       if (!timerPause)
       {
         timer--;
-        if((timer/60) > 10)
+        if((timer/60) >= 10)
         {
           textTimer.text = "00:"+(timer/60).toFixed(0);
         }

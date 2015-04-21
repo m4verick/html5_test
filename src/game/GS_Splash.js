@@ -15,6 +15,7 @@
     this state triggered at the first time when user play the game
 */
 var stage;
+var imgSplashHackBtn;
 
 function Splash_Init()
 {
@@ -22,6 +23,7 @@ function Splash_Init()
     //var m_loadingBg
 
     stage = new createjs.Stage(document.getElementById("testCanvas"));
+    containerHackBtn = new createjs.Container();
 
     createjs.Touch.enable(stage);
     //stage.enableMouseOver(10);
@@ -45,12 +47,16 @@ function Splash_Init()
     imgSplashCellphone.scaleX = imgSplashCellphone.scaleY = 0.6;
     imgSplashCellphone.image.onload = setImg(stage, imgSplashCellphone, imgSplashCellphoneX, imgSplashCellphoneY);
 
-    var imgSplashHackBtn = new createjs.Bitmap("assets/images/hack_button.png");
+    imgSplashHackBtn = new createjs.Bitmap("assets/images/hack_button.png");
     var imgSplashHackBtnX = 400;
     var imgSplashHackBtnY = 600;
+    //imgSplashHackBtn.alpha = 1;
+    imgSplashHackBtn.name = "hackBtn";
     imgSplashHackBtn.scaleX = imgSplashHackBtn.scaleY = 0.75;
     imgSplashHackBtn.addEventListener("click",onHackClick);
     imgSplashHackBtn.image.onload = setImg(stage, imgSplashHackBtn, imgSplashHackBtnX, imgSplashHackBtnY);
+
+    setHackGlow();
 
     setTextHackButton();
 
@@ -59,6 +65,23 @@ function Splash_Init()
 }
 
 var indexImg = 0;
+
+var containerHackBtn;
+var polygonGlow;
+
+function setHackGlow()
+{
+  polygonGlow = new createjs.Shape();
+  //hexShape.beginFill("#005F54").drawPolyStar(posX,posY,31,6,0,-90);
+  polygonGlow.graphics.beginFill("#E87300");
+  polygonGlow.graphics.moveTo(0,0).lineTo(0,50).lineTo(15,63).lineTo(277,63).lineTo(277,24).lineTo(254,0).lineTo(0,0);//.lineTo(0,0);
+  polygonGlow.alpha = 0.01;
+  containerHackBtn.addChild(polygonGlow);
+  containerHackBtn.x = 400;
+  containerHackBtn.y = 600;
+  stage.addChild(containerHackBtn);
+  stage.update();
+}
 
 function setContainerStart()
 {
@@ -83,24 +106,47 @@ function setTextHackButton()
 
 function setImg(stage, img, x, y)
 {
-    stage.addChild(img);
+    /*
+    if (img.name == "hackBtn")
+    {
+      imgSplashHackBtn.cache(0,0,imgSplashHackBtn.width,imgSplashHackBtn.height);
+      var redFilter = new createjs.ColorFilter(0,1,0,1);
+      imgSplashHackBtn.filters = [redFilter];
+      stage.addChild(img);
+    }
+    else
+    {
+    */
+      stage.addChild(img);
+    //}
     img.x = x;
     img.y = y;
     //img.scaleX = img.scaleY = scale;
     stage.update();
-    indexImg++;
+//    indexImg++;
 }
 
 function onHackClick(e)
 {
+    createjs.Tween.get(polygonGlow).to({alpha:0.7},300).to({alpha:0.01}).call(onHackGlowFinish);
+    console.log("ghfdaskjkjasd");
     //stage.removeChildAt(3);
     //stage.removeChildAt(2);
     //stage.removeChildAt(1);
     //stage.removeChildAt(0);
-    stage.removeAllEventListeners();
-    stage.removeAllChildren();
-    Gameplay_Init();
-    console.log("heuahhahahahah");
+
+  //  stage.removeAllEventListeners();
+  //  stage.removeAllChildren();
+  //  Gameplay_Init();
+
+}
+
+function onHackGlowFinish()
+{
+  //console.log("tessssttttt");
+  stage.removeAllEventListeners();
+  stage.removeAllChildren();
+  Gameplay_Init();
 }
 
 /*

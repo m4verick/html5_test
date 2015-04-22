@@ -20,9 +20,7 @@ var textTimer;
 var stage;
 
 var digitCombination = [-1,-1,-1,-1];
-
 var userTouch = [-1,-1,-1,-1];
-
 var containerbox;
 
 var digitIndex = 0;
@@ -31,426 +29,406 @@ var found = false;
 var timerPause = false;
 
 var USER_LEVEL = 4; // set user level for round stage
-
 var roundStage = -1;
 
-function Gameplay_Init()
+var wrongGuess = false;
+
+var colorHex = "#01B9A1";
+var text1;
+var box;
+function GS_Gameplay()
 {
-  stage = new createjs.Stage(document.getElementById("testCanvas"));
-
-  var imgGame = new createjs.Bitmap("assets/images/main_bg.png");
-  var imgGameX = 300;
-  var imgGameY = 0;
-  imgGame.image.onload = setImg(stage, imgGame, imgGameX, imgGameY);
-
-  var imgGameDigit = new createjs.Bitmap("assets/images/digicode_bg_num.png");
-  var imgGameDigitX = 350;
-  var imgGameDigitY = 250;
-  imgGameDigit.scaleX = imgGameDigit.scaleY = 0.9;
-  imgGameDigit.image.onload = setImg(stage, imgGameDigit, imgGameDigitX, imgGameDigitY);
-
-  var imgGamePageFrm = new createjs.Bitmap("assets/images/page_frame.png");
-  var imgGamePageFrmX = 400;
-  var imgGamePageFrmY = 600;
-  imgGamePageFrm.scaleX = imgGamePageFrm.scaleY = 0.6;
-  imgGamePageFrm.image.onload = setImg(stage, imgGamePageFrm, imgGamePageFrmX, imgGamePageFrmY);
-
-  setContainer(stage);
-
-  countdownTimer(stage);
-
-  generateDigitCombination();
-
-  touchAreaHex();
-
-  setRoundStage();
-
-  AISetCombination();
-
-  createjs.Ticker.setFPS(30);
-  createjs.Ticker.addEventListener("tick",stage);
-}
-
-var containerShape;
-
-function setRoundStage()
-{
-    //01b9a1
-    var posXround = 380;
-    var posYround = 626;
-    var roundShape = new createjs.Graphics();
-    //hexShape.beginFill("#005F54").drawPolyStar(posX,posY,31,6,0,-90);
-    roundShape.beginFill("#01B9A1").drawCircle(0,0,20);
-    var shapeRoundStage = new createjs.Shape(roundShape);
-    shapeRoundStage.alpha = 0;
-    containerShape = new createjs.Container();
-    //var imgRoundStage = new createjs.Bitmap("assets/images/page_frame_highlight.png");
-
-    for(var i=0;i<5;i++)
-  	{
-  		  var circClone = shapeRoundStage.clone();
-      	circClone.index = i;
-      	containerShape.addChildAt(circClone,i);
-      	mappingInputTouch(stage,containerShape);
-  	}
-
-    containerShape.x = posXround;
-    containerShape.y = posYround;
-
-	  var tempPos = 0;
-    for (var i=0; i<5; i++)
-    {
-        containerShape.getChildAt(i).x = tempPos+46;
-		    tempPos = containerShape.getChildAt(i).x;
-    }
-}
-
-function setContainer(stg)
-{
-  var score = new createjs.Container();
-
-  var imgGameTL = new createjs.Bitmap("assets/images/top_left.png");
-  var imgGameBL = new createjs.Bitmap("assets/images/bottom_left.png");
-  var imgGameBR = new createjs.Bitmap("assets/images/bottom_right.png");
-  var imgGameTR = new createjs.Bitmap("assets/images/top_right.png");
-
-  score.addChild(imgGameTL, imgGameBL, imgGameBR, imgGameTR);
-  imgGameTL.x = 300;
-  imgGameTL.y = 500;
-
-  imgGameBL.x = 300;
-  imgGameBL.y = 600;
-
-  imgGameBR.x = 650;
-  imgGameBR.y = 600;
-
-  imgGameTR.x = 650;
-  imgGameTR.y = 500;
-
-  score.x = 200;
-  score.y = -250;
-
-  score.scaleX = score.scaleY = 0.75;
-
-  stg.addChild(score);
-  stg.update();
-}
-
-function touchAreaHex()
-{
-  posX = 526;
-  posY = 285;
-
-  //posX = 497;
-  //posY = 252;
-
-  padding  = 5;
-
- 	var hexShape = new createjs.Graphics();
-  //hexShape.beginFill("#005F54").drawPolyStar(posX,posY,31,6,0,-90);
-  hexShape.beginFill("#E87300").drawPolyStar(posX,posY,31,6,0,-90);
-  var shape = new createjs.Shape(hexShape);
-  //var shape = new createjs.Bitmap("assets/images/digicode_highlight.png");
-  //shape.scaleX = shape.scaleY = 0.9;
-  shape.alpha = 0.01;
-	containerbox = new createjs.Container();
-
-	var l = 10;
-	var cols = 7;
-
-	for(var i=0;i<=l;i++)
+	box = new createjs.Container();
+	this.GS_Gameplay_Init = function ()
 	{
-		var hexClone = shape.clone();
-		hexClone.name = i;
-    hexClone.addEventListener("click",onHexClick)
-		containerbox.addChildAt(hexClone,i);
-    mappingInputTouch(stage,containerbox);
+		
+		text1 = TEXT.EN.GP_TEXT_TUTORIAL_1;
+		textHowTo = new createjs.Text(text1, "30px Hacker", "#ffffff");
+
+		var w = ( textHowTo.getMeasuredWidth() ) * textHowTo.scaleX;
+		var h = ( textHowTo.getMeasuredHeight() ) * textHowTo.scaleY;
+
+		textHowTo.textAlign = 'center'; 
+		textHowTo.lineWidth = 300;
+		
+		textHowTo.x = (FAR_ANCHOR<<1)+50;
+		textHowTo.y = (FAR_ANCHOR<<1) + 100;
+		box.addChild(textHowTo);
+		
+		text1 = TEXT.EN.GP_TEXT_TUTORIAL_2;
+		textHowTo = new createjs.Text(text1, "15px Hacker", "#ffffff");
+		textHowTo.textAlign = 'center'; 
+		textHowTo.lineWidth = 300;
+		
+		textHowTo.x = (FAR_ANCHOR<<1)+50;
+		textHowTo.y = (FAR_ANCHOR<<1) + 250;
+		box.addChild(textHowTo);
+		finish_containerbox.addChild(box);
+		
+		//module.drawString( TEXT.EN.GP_TEXT_TUTORIAL_1 , "30px Hacker", "#ffffff", (FAR_ANCHOR<<1)+50, (FAR_ANCHOR<<1) + 100, finish_containerbox, 300, 'center');
+		
+		//module.drawString( TEXT.EN.GP_TEXT_TUTORIAL_2 , "15px Hacker", "#ffffff", (FAR_ANCHOR<<1)+50, (FAR_ANCHOR<<1) + 250, finish_containerbox, 200, 'center');
 	}
-	//containerbox.x = posX;
-  //containerbox.y = posY;
-
-  containerbox.x=0;
-
-	var tempX = 0;
-	var tempY = 0;
-	for(var j=0;j<=10;j++)
+	
+	this.onButtonClick = function(e)
 	{
-		if(j == 0) // Row 1
+		console.log("This should exit the tutorial box!!");
+		this.GS_Gameplay_TutorialHide();
+	}
+	this.GS_Gameplay_TutorialHide = function ()
+	{
+		finish_containerbox.removeChildAt(3);
+		box.removeAllChildren();
+		mainStage.update();
+		Gameplay_Init();
+	}
+	function Gameplay_Init()
+	{
+	  setContainer(mainStage);
+	  countdownTimer(mainStage);
+	  generateDigitCombination();
+	  touchAreaHex();
+	  setRoundStage();
+	  AISetCombination();
+	
+	  createjs.Ticker.setFPS(30);
+	  createjs.Ticker.addEventListener("tick",mainStage);
+	}
+	
+	var containerShape;
+	
+	function setRoundStage()
+	{
+		//01b9a1
+		var posXround = 0;//380;
+		var posYround = (FAR_ANCHOR << 2) + 135;
+		
+		var roundShape = new createjs.Graphics();
+		roundShape.beginFill("#01B9A1").drawCircle(0,0,20);
+		
+		var shapeRoundStage = new createjs.Shape(roundShape);
+		shapeRoundStage.alpha = 0;
+		containerShape = new createjs.Container();
+	
+		for(var i=0;i<5;i++)
 		{
-			containerbox.getChildAt(j).x = tempX = 0;
+			var circClone = shapeRoundStage.clone();
+			circClone.index = i;
+			containerShape.addChildAt(circClone,i);
+			mappingInputTouch(mainStage,containerShape);
 		}
-		else if (j > 0 && j < 5) // Row 2
+	
+		containerShape.x = posXround;
+		containerShape.y = posYround;
+	
+		var tempPos = 110;
+		for (var i=0; i<5; i++)
 		{
-			if(j == 1)
-			{
-				containerbox.getChildAt(j).x = tempX - ((31*3) - (2*2));
-				tempX = containerbox.getChildAt(j).x;
-			}
-			else
-			{
-				//console.log("tempX[" +j+ "] = " + tempX);
-				containerbox.getChildAt(j).x = tempX + ( ((j-1)*62)-((j-1)*2) );
-			}
+			containerShape.getChildAt(i).x = tempPos+(i*60)+(i+1);
+			//tempPos = containerShape.getChildAt(i).x;
+		}
+		
+		finish_containerbox.addChild(containerShape);
+	}
+	
+	function setContainer(stg)
+	{
+	  var score = new createjs.Container();
+	
+	  var imgGameTL = new createjs.Bitmap("assets/images/top_left.png");
+	  var imgGameBL = new createjs.Bitmap("assets/images/bottom_left.png");
+	  var imgGameBR = new createjs.Bitmap("assets/images/bottom_right.png");
+	  var imgGameTR = new createjs.Bitmap("assets/images/top_right.png");
+	
+	  score.addChild(imgGameTL, imgGameBL, imgGameBR, imgGameTR);
+	  imgGameTL.x = 300;
+	  imgGameTL.y = 500;
+	
+	  imgGameBL.x = 300;
+	  imgGameBL.y = 600;
+	
+	  imgGameBR.x = 650;
+	  imgGameBR.y = 600;
+	
+	  imgGameTR.x = 650;
+	  imgGameTR.y = 500;
+	
+	  score.x = -140;
+	  score.y = -340;
+	
+	  
+	  score.scaleX = score.scaleY = 0.75;
+	  finish_containerbox.addChild(score);
+	  stg.addChild(finish_containerbox);
+	  stg.update();
+	}
+	
+	function touchAreaHex()
+	{
+		posX = 231;
+		posY = (FAR_ANCHOR<<1) + 30;
+	
+		padding  = 1;
+	
+		var hexShape = new createjs.Graphics();
+		
+		if(wrongGuess)
+		{
+			colorHex = "#990000";
+		}
+		else
+			colorHex = "#E87300";
 
-			containerbox.getChildAt(j).y = 0 + (31*1.5) +4;
-		}
-		else if (j>=5 && j <= 7) //Row 3
+	  	hexShape.beginFill(colorHex).drawPolyStar(posX,posY,28,6,0,-90);
+	  	var shape = new createjs.Shape(hexShape);
+	  	shape.alpha = 0.01;
+		containerbox = new createjs.Container();
+	
+		var l = 9;
+		var cols = 7;
+	
+		for(var i=0; i<=l; i++)
 		{
-			if (j == 5 )
-			{
-				containerbox.getChildAt(j).x = tempX + 31 - (1*2);
-				tempX = containerbox.getChildAt(j).x;
-			}
-			else
-			{
-				//console.log("tempX[" +j+ "] = " + tempX);
-				containerbox.getChildAt(j).x = tempX + ( ((j-5)*62)-((j-5)*2) );
-			}
-			containerbox.getChildAt(j).y = (31*3)+8;
+			var hexClone = shape.clone();
+			hexClone.name = i;
+			hexClone.addEventListener("click",onHexClick)
+			containerbox.addChildAt(hexClone,i);
+			mappingInputTouch(mainStage,containerbox);
 		}
-		else if (j >= 8 && j <=9) //Row 4
+
+	  	containerbox.x = 0;
+		finish_containerbox.addChild(containerbox);
+		var tempX = 0;
+		var tempY = 0;
+		for(var j=0;j<=10;j++)
 		{
-			if (j == 8 )
+			if(j == 0) // Row 1
 			{
-				containerbox.getChildAt(j).x = tempX + 31 - (1.5);
-				tempX = containerbox.getChildAt(j).x;
+				containerbox.getChildAt(j).x = tempX = 0;
 			}
-			else
+			else if (j > 0 && j < 5) // Row 2
 			{
-				//console.log("tempX[" +j+ "] = " + tempX);
-				containerbox.getChildAt(j).x = tempX + ( (62)-(2) );
+				if(j == 1)
+				{
+					containerbox.getChildAt(j).x = tempX - 79;
+					tempX = containerbox.getChildAt(j).x;
+				}
+				else
+				{
+					containerbox.getChildAt(j).x = tempX + (53*(j-1));
+				}
+				containerbox.getChildAt(j).y = 45;
 			}
-			containerbox.getChildAt(j).y = (31*4.5)+14;
-		}
-		else //Row 5
-		{
-			//console.log("cek j "+j);
-			containerbox.getChildAt(j).x = tempX = 0;
-			containerbox.getChildAt(j).y = (31*6)+18;
+			else if (j>=5 && j <= 7) //Row 3
+			{
+				if (j == 5 )
+				{
+					containerbox.getChildAt(j).x = tempX + 27;
+					tempX = containerbox.getChildAt(j).x;
+				}
+				else
+				{
+					containerbox.getChildAt(j).x = tempX + (53*(j-5));
+				}
+				containerbox.getChildAt(j).y = 92;
+			}
+			else if (j >= 8 && j <=9) //Row 4
+			{
+				if (j == 8 )
+				{
+					containerbox.getChildAt(j).x = tempX + 26;
+					tempX = containerbox.getChildAt(j).x;
+				}
+				else
+				{
+					containerbox.getChildAt(j).x = tempX + (52);
+				}
+				containerbox.getChildAt(j).y = 137;
+			}
 		}
 	}
-
-  //scale touch area
-  //containerbox.scaleX = containerbox.scaleY = 0.5;
+	
+	function roundStageIncrease()
+	{
+	  roundStage++;
+	  createjs.Tween.get(containerShape.getChildAt(roundStage)).to({alpha:1});
+	}
+	
+	function roundStageDecrease()
+	{
+		createjs.Tween.get(containerShape.getChildAt(roundStage)).to({alpha:0});
+		roundStage--;
+	  
+	}
+	
+	function AISetCombination()
+	{
+		for(var i=0;i<4;i++)
+		{
+			createjs.Tween.get(containerbox.getChildAt(digitCombination[i])).wait(500*(i+1)).to({alpha:0.7},500).to({alpha:0.01});
+		}
+	}
+	
+	function ClearAlpha()
+	{
+	  for(var i=0;i<10;i++)
+	  {
+		containerbox.getChildAt(i).alpha = 0.01;
+	  }
+	}
+	
+	function initArrayUser()
+	{
+	  userTouch = [-1,-1,-1,-1];
+	  digitCombination = [-1,-1,-1,-1];
+	  result = [-1,-1,-1,-1];
+	  digitIndex = 0;
+	  generateDigitCombination();
+	  ClearAlpha();
+	  AISetCombination();
+	}
+	
+	function glowTouch(targetName)
+	{
+	  createjs.Tween.get(containerbox.getChildByName(targetName.name)).to({alpha:0.7},500).to({alpha:0.01});
+	}
+	
+	function onHexClick(e)
+	{
+		var target = e.target;
+		console.log("target name : "+target.name);
+		glowTouch(target);
+		if (digitCombination[digitIndex] == target.name)
+		{
+		  result[digitIndex] = digitCombination[digitIndex];
+		  digitIndex++;
+		  if(result.toString() == digitCombination.toString())
+		  {
+		
+			console.log("BENAR");
+			roundStageIncrease();
+			initArrayUser();
+			if (roundStage == USER_LEVEL)
+			{
+			  timerPause = true;
+			  console.log("JUARAAAAAA LEVELLLLLLL");
+			}
+		  }
+		  else
+		  {
+			  console.log("SALAH");
+		  }
+		}
+		else
+		{
+		  if (roundStage >= 0)
+		  {
+			  console.log("SALAH 2");
+			  console.log("RoundStage : "+roundStage);
+			  roundStageDecrease();
+		  }
+		  else
+		  if (roundStage < 0)
+		  {
+			  console.log("RoundStage : "+roundStage);
+			  console.log("GAME OVER");
+			  gOver = true;
+			  timerPause = true;
+		  }
+		}
+	}
+	
+	function mappingInputTouch(stage,shape)
+	{
+	  stage.addChild(shape);
+	  stage.update();
+	}
+	
+	function setImg(stage, img, x, y)
+	{
+		stage.addChild(img);
+		img.x = x;
+		img.y = y;
+		stage.update();
+	}
+	
+	function countdownTimer(stage)
+	{
+	
+		textTimer = new createjs.Text("00:00","75px Hacker","#FFFFFF");
+		textTimer.x = (FAR_ANCHOR) + 60;
+		textTimer.y = (MED_ANCHOR) + 10;
+		textTimer.scaleX = textTimer.scaleY = 0.75;
+		textTimer.addEventListener("tick",TimerTick);
+		finish_containerbox.addChild(textTimer);
+		mainStage.addChild(finish_containerbox);
+		mainStage.update();
+	}
+	
+	function generateDigitCombination()
+	{
+	  var minimum = 0;
+	  var maximum = 9;
+	
+	  var inc = 0;
+	  while(inc < 4)
+	  {
+		digitCombination[inc] = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+		inc++;
+	  }
+	 
+	  console.log(digitCombination.toString());
+	  
+	}
+	
+	function TimerTick()
+	{
+	  if(timer>0)
+	  {
+		  //stop timer when user win
+		  if (!timerPause)
+		  {
+			timer--;
+			if((timer/60) >= 10)
+			{
+			  textTimer.text = "00:"+(timer/60).toFixed(0);
+			}
+			else
+			{
+			  textTimer.text = "00:0"+(timer/60).toFixed(0);
+			}
+	
+		  //console.log((timer/60).toFixed(2));
+		  }
+		  else
+		  {
+			//createjs.Ticker.setPaused(true);
+			//comment below for a while
+			if(gOver)
+			{
+				//TODO : if there's game over
+				goToFinish();
+			}
+			else
+			{
+				goToFinish();
+			}
+		  }
+	  }
+	  else
+	  {
+		//createjs.Ticker.setPaused(true);
+		goToFinish();
+	  }
+	}
+	
+	function goToFinish()
+	{
+		mainStage.removeAllEventListeners();
+	  	finish_containerbox.removeAllChildren();
+	  	main_debug.changeState(GAME_STATE_FINISH);
+	  	UI_Preload.Init_Builder();
+	}
 }
 
-function roundStageIncrease()
-{
-  roundStage++;
-  createjs.Tween.get(containerShape.getChildAt(roundStage)).to({alpha:1});
-}
-
-function roundStageDecrease()
-{
-  createjs.Tween.get(containerShape.getChildAt(roundStage)).to({alpha:0});
-  roundStage--;
-}
-
-function AISetCombination()
-{
-    //containerbox.getChildAt(digitCombination[0])).alpha =
-
-    //for(var i=0;i<digitCombination.length;i++)
-  //  {
-      //createjs.Tween.get(containerbox.getChildAt(digitCombination[0])).to({alpha:0.7},500).to({alpha:0.01}).addEventListener("change",handleComplete);
-      for(var i=0;i<4;i++)
-      {
-        createjs.Tween.get(containerbox.getChildAt(digitCombination[i])).wait(500*(i+1)).to({alpha:0.7},500).to({alpha:0.01});
-        //createjs.Tween.get(containerbox.getChildAt(digitCombination[1])).wait(1000).to({alpha:0.7},500).to({alpha:0.01});
-        //createjs.Tween.get(containerbox.getChildAt(digitCombination[2])).wait(1500).to({alpha:0.7},500).to({alpha:0.01});
-        //createjs.Tween.get(containerbox.getChildAt(digitCombination[3])).wait(2000).to({alpha:0.7},500).to({alpha:0.01});
-      }
-      //createjs.Tween.get(containerbox.getChildAt(0)).wait(500).to({alpha:0.7, visible:false},1000).call(handleComplete);
-      //createjs.Tween.get(containerbox.getChildAt(1)).wait(500).to({alpha:0.7, visible:false},1000).call(handleComplete);
-      //createjs.Tween.get(containerbox.getChildAt(2)).wait(500).to({alpha:0.7, visible:false},1000).call(handleComplete);
-      //createjs.Tween.get(containerbox.getChildAt(3)).wait(500).to({alpha:0.7, visible:false},1000).call(handleComplete);
-      //containerbox.getChildAt(digitCombination[i]).alpha = 0.5;
-    //}
-/*
-    var mc = new createjs.MovieClip(null, 0, true, {start:2});
-    stage.addChild(mc);
-
-    for(var i=0;i<digitCombination.length;i++)  {
-    mc.timeline.addTween(
-      createjs.Tween.get(containerbox.getChildAt(digitCombination[i])).to({alpha:0.7},50));
-  }
-  mc.gotoAndPlay("start");
-  */
-}
-
-
-
-function ClearAlpha()
-{
-  for(var i=0;i<10;i++)
-  {
-    containerbox.getChildAt(i).alpha = 0.01;
-  }
-}
-
-function initArrayUser()
-{
-  userTouch = [-1,-1,-1,-1];
-  digitCombination = [-1,-1,-1,-1];
-  result = [-1,-1,-1,-1];
-  digitIndex = 0;
-  generateDigitCombination();
-  ClearAlpha();
-  AISetCombination();
-}
-
-function glowTouch(targetName)
-{
-  createjs.Tween.get(containerbox.getChildByName(targetName.name)).to({alpha:0.7},500).to({alpha:0.01});
-}
-
-function onHexClick(e)
-{
-    var target = e.target;
-    //while(e.target)
-    //{
-     // console.log("target name : "+target.name);
-      //console.log("huehwu : "+containerbox.getChildAt(e.target.index));
-      glowTouch(target);
-      if (digitCombination[digitIndex] == target.name)
-      {
-          result[digitIndex] = digitCombination[digitIndex];
-          //found = true;
-          digitIndex++;
-          if(result.toString() == digitCombination.toString())
-          {
-
-            //console.log("BENAR");
-            //console.log(result.toString());
-            roundStageIncrease();
-            initArrayUser();
-            if (roundStage == USER_LEVEL)
-            {
-              timerPause = true;
-              //console.log("JUARAAAAAA LEVELLLLLLL");
-            }
-          }
-      }
-      else
-      {
-          if (roundStage != -1)
-          {
-              //console.log("roudnsatage : "+roundStage);
-              roundStageDecrease();
-          }
-          else
-          {
-              //console.log("roudnsatage : "+roundStage);
-              timerPause = true;
-          }
-      }
-
-      /*
-      if(e.target == containerbox.getChildAt(digitCombination[digitIndex]))
-      {
-          console.log("userToouch : "+userTouch[digitIndex]);
-          userTouch[digitIndex] =
-          result[digitIndex] = digitCombination[digitIndex];
-          //found = true;
-          digitIndex++;
-          if(result.toString() == digitCombination.toString())
-          {
-
-            console.log("MENAAAAANNNNNGGGGG");
-            //console.log(result.toString());
-            roundStageIncrease();
-            initArrayUser();
-            if (roundStage == USER_LEVEL)
-            {
-              timerPause = true;
-              console.log("JUARAAAAAA LEVELLLLLLL");
-            }
-          }
-      }
-      */
-
-    //}
-}
-
-function mappingInputTouch(stage,shape)
-{
-  stage.addChild(shape);
-  stage.update();
-}
-
-function setImg(stage, img, x, y)
-{
-    stage.addChild(img);
-    img.x = x;
-    img.y = y;
-    stage.update();
-}
-
-function countdownTimer(stage)
-{
-
-    textTimer = new createjs.Text("00:00","75px Hacker","#FFFFFF");
-    textTimer.x = 480;
-    textTimer.y = 140;
-
-    textTimer.addEventListener("tick",TimerTick);
-    stage.addChild(textTimer);
-    stage.update();
-}
-
-function generateDigitCombination()
-{
-  //http://stackoverflow.com/questions/1527803/generating-random-numbers-in-javascript-in-a-specific-range
-  var minimum = 0;
-  var maximum = 9;
-
-  var inc = 0;
-  while(inc < 4)
-  {
-    digitCombination[inc] = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-    inc++;
-  }
-  console.log(digitCombination.toString());
-
-}
-
-function TimerTick()
-{
-  if(timer>0)
-  {
-      //stop timer when user win
-      if (!timerPause)
-      {
-        timer--;
-        if((timer/60) >= 10)
-        {
-          textTimer.text = "00:"+(timer/60).toFixed(0);
-        }
-        else
-        {
-          textTimer.text = "00:0"+(timer/60).toFixed(0);
-        }
-
-      //console.log((timer/60).toFixed(2));
-      }
-      else
-      {
-        //createjs.Ticker.setPaused(true);
-        //comment below for a while
-        //createjs.Ticker.removeAllEventListeners();
-        stage.removeAllEventListeners();
-        stage.removeAllChildren();
-        GS_Finish.GS_Finish_Init();
-      }
-  }
-  else
-  {
-    //createjs.Ticker.setPaused(true);
-    //comment below for a while
-
-    //createjs.Ticker.removeAllEventListeners();
-    stage.removeAllEventListeners();
-    stage.removeAllChildren();
-    GS_Finish.GS_Finish_Init();
-  }
-}
+var GS_Gameplay = new GS_Gameplay();

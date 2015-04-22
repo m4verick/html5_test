@@ -18,8 +18,6 @@
 var bg		= null; //background
 var m_state	= 0;
 var finish_containerbox = null;
-var play_containerbox = null;
-var play_containerGroupbox = null;
 var manifest;
 var canvasH;
 var canvasW;
@@ -30,48 +28,77 @@ function UI_Preload()
 	{
 		var tempManifest;
 		var imgPath = "assets/images/";
-		m_currentState = GAME_STATE_FINISH;
+		if(m_currentState <= 0)
+		{
+			m_currentState = GAME_STATE_SPLASH;
+		}
 		switch (m_currentState)
 		{
 			case GAME_STATE_SPLASH:
+				tempManifest = [
+				{
+					src: imgPath + "splash_bg.png",
+					id: "bg"
+				},
+				{
+					src: imgPath + "message_box.png",
+					id: "msgBox"
+				},
+				{
+					src: imgPath + "cellphone.png",
+					id: "cellphone"
+				},
+				{
+					src: imgPath + "hack_button.png",
+					id: "actButton"
+				},
+				{
+					src: imgPath + "currency_icon_large.png",
+					id: "currency"
+				},
+				{
+					src: imgPath + "hacker.png",
+					id: "hacker"
+				}
+				];
 				break;
 			case GAME_STATE_TUTORIAL:
-				break;
-			case GAME_STATE_TUTORIAL:
+				tempManifest = [
+				{
+					src: imgPath + "splash_bg.png",
+					id: "bg"
+				},
+				{
+					src: imgPath + "message_box.png",
+					id: "msgBox"
+				},
+				{
+					src: imgPath + "cellphone.png",
+					id: "cellphone"
+				},
+				{
+					src: imgPath + "hack_button.png",
+					id: "actButton"
+				}
+				];
 				break;
 			case GAME_STATE_PLAY:
 				tempManifest = [
 				{
-					src: imgPath + "main_bg.png",
-					id: "main_bg"
+					src: imgPath + "splash_bg.png",
+					id: "bg"
 				},
 				{
 					src: imgPath + "digicode_bg_num.png",
-					id: "digicode_bg_num"
+					id: "digicode"
 				},
 				{
 					src: imgPath + "page_frame.png",
-					id: "page_frame"
+					id: "pgframe"
 				},
 				{
-					src: imgPath + "top_left.png",
-					id: "top_left",
-					group: "containerTime"
-				},
-				{
-					src: imgPath + "bottom_left.png",
-					id: "bottom_left",
-					group: "containerTime"
-				},
-				{
-					src: imgPath + "bottom_right.png",
-					id: "bottom_right",
-					group: "containerTime"
-				},
-				{
-					src: imgPath + "top_right.png",
-					id: "top_right",
-					group: "containerTime"
+					src: imgPath + "text_box.png",
+					id: "txtbox"
 				}
 				];
 				break;
@@ -104,7 +131,11 @@ function UI_Preload()
 		}
 		manifest = tempManifest;
 	}
-	
+	this.callPreload = function()
+	{
+		startPreload();
+		console.log("callPreload state:" + m_currentState);
+	}
 	function startPreload() 
 	{
 		preload = new createjs.LoadQueue(true);
@@ -123,123 +154,122 @@ function UI_Preload()
 		//var scaleContainer = module.resize( mainCanvas, 1024, 768);
 		canvasH = mainCanvas.height;
 		canvasW = mainCanvas.width;
-		console.log("-->>mainCanvas h:" + canvasH + " w:"+ canvasW);
+		console.log("handleFileLoad : currentState " + m_currentState);
 		switch (m_currentState)
 		{
-			case GAME_STATE_PLAY:
-				if(event.item.id == "main_bg")
+			case GAME_STATE_SPLASH:
+				if(event.item.id == "actButton")
 				{
-					//console.log("Action Button is loaded");
-					//create bitmap here
-					var imgMainBg	= new createjs.Bitmap(event.result);
-					var a = imgMainBg.getBounds();
-					imgMainBg.x =0;// ((canvasW - a.width)/2);
-					console.log("handleFileLoad : " + a.width);
-					//imgMainBg.on("click",main_debug.aaaa);
-					play_containerbox.addChild(imgMainBg);
+					var imgActButton	= new createjs.Bitmap(event.result);
+					var a = imgActButton.getBounds();
+					imgActButton.x = FAR_ANCHOR + 55;
+					imgActButton.y = (FAR_ANCHOR << 2) + 150;
+					imgActButton.on("click",main_debug.Button_onClick);
+					imgActButton.scaleX = 0.5;
+					imgActButton.scaleY = 0.8;
+					finish_containerbox.addChild(imgActButton);
 				}
 				else
-				if(event.item.id == "digicode_bg_num")
+				if(event.item.id == "msgBox")
 				{
-					console.log("Messagebox is loaded");
-					//create bitmap here
-					var imgDigicodeNum	= new createjs.Bitmap(event.result);
-					var a = imgDigicodeNum.getBounds();
-					imgDigicodeNum.x = ((canvasW - a.width)/2);
-					console.log("handleFileLoad : " + a.width);
-					play_containerbox.addChild(imgDigicodeNum);
+					var imgMsgBox	= new createjs.Bitmap(event.result);
+					var a = imgMsgBox.getBounds();
+					imgMsgBox.x = SIDE_ANCHOR;//((canvasW-a.width)/2);
+					imgMsgBox.y = (FAR_ANCHOR << 1);
+					imgMsgBox.scaleX = imgMsgBox.scaleY = 0.8;
+					finish_containerbox.addChild(imgMsgBox);
 				}
 				else
-				if(event.item.id == "page_frame")
+				if(event.item.id == "bg")
 				{
-					console.log("Background is loaded");
 					//create bitmap here
-					var imgPageFrame	= new createjs.Bitmap(event.result);
-					var a = imgPageFrame.getBounds();
+					var imgSplash	= new createjs.Bitmap(event.result);
+					var a = imgSplash.getBounds();
 					bgBounds = a;
-					console.log("bgBounds : " + bgBounds);
-					imgPageFrame.x = ((canvasW - a.width)/2);
-					console.log("handleFileLoad : " + a.width);
-					play_containerbox.addChild(imgPageFrame);
+					imgSplash.x = 0;//((canvasW-a.width)/2);
+					finish_containerbox.addChild(imgSplash);
 				}
 				else
-				if(event.item.group == "containerTime")
+				if(event.item.id == "cellphone")
 				{
-					if(event.item.id == "top_left")
-					{
-						console.log("Visa Logo is loaded");
-						//create bitmap here
-						var imgTopLeft	= new createjs.Bitmap(event.result);
-						var a = imgTopLeft.getBounds();
-						console.log("mainCanvas : " + mainCanvas.width);
-						imgTopLeft.x = ((canvasW - a.width)/2);
-						imgTopLeft.y = ((canvasH - a.height));
-						console.log("bgBounds2 : " + bgBounds);
-						//imgVisa.y = bgBounds.height - a.height;
-						console.log("handleFileLoad : " + a.width);
-						play_containerGroupbox.addChild(imgTopLeft);
-						play_containerbox.addChild(play_containerGroupbox);
-					}
-					else
-					if(event.item.id == "bottom_left")
-					{
-						console.log("Visa Logo is loaded");
-						//create bitmap here
-						var imgBottomLeft	= new createjs.Bitmap(event.result);
-						var a = imgBottomLeft.getBounds();
-						console.log("mainCanvas : " + mainCanvas.width);
-						imgBottomLeft.x = ((canvasW - a.width)/2);
-						imgBottomLeft.y = ((canvasH - a.height));
-						console.log("bgBounds2 : " + bgBounds);
-						//imgVisa.y = bgBounds.height - a.height;
-						console.log("handleFileLoad : " + a.width);
-						play_containerGroupbox.addChild(imgBottomLeft);
-						play_containerbox.addChild(play_containerGroupbox);
-					}
-					else
-					if(event.item.id == "bottom_right")
-					{
-						console.log("Visa Logo is loaded");
-						//create bitmap here
-						var imgBottomRight	= new createjs.Bitmap(event.result);
-						var a = imgBottomRight.getBounds();
-						console.log("mainCanvas : " + mainCanvas.width);
-						imgBottomRight.x = ((canvasW - a.width)/2);
-						imgBottomRight.y = ((canvasH - a.height));
-						console.log("bgBounds2 : " + bgBounds);
-						//imgVisa.y = bgBounds.height - a.height;
-						console.log("handleFileLoad : " + a.width);
-						play_containerGroupbox.addChild(imgBottomRight);
-						play_containerbox.addChild(play_containerGroupbox);
-					}
-					else
-					if(event.item.id == "top_right")
-					{
-						console.log("Visa Logo is loaded");
-						//create bitmap here
-						var imgTopRight	= new createjs.Bitmap(event.result);
-						var a = imgTopRight.getBounds();
-						console.log("mainCanvas : " + mainCanvas.width);
-						imgTopRight.x = ((canvasW - a.width)/2);
-						imgTopRight.y = ((canvasH - a.height));
-						console.log("bgBounds2 : " + bgBounds);
-						//imgVisa.y = bgBounds.height - a.height;
-						console.log("handleFileLoad : " + a.width);
-						play_containerGroupbox.addChild(imgTopRight);
-						play_containerbox.addChild(play_containerGroupbox);
-					}
+					//create bitmap here
+					var imgCellPhone	= new createjs.Bitmap(event.result);
+					var a = imgCellPhone.getBounds();
+					imgCellPhone.x = (FAR_ANCHOR << 1) + 80;
+					imgCellPhone.y = (FAR_ANCHOR << 1) + 55;
+					imgCellPhone.scaleX = imgCellPhone.scaleY = 0.5;
+					finish_containerbox.addChild(imgCellPhone);
+				}else
+				if(event.item.id == "currency")
+				{
+					//create bitmap here
+					var imgCurrency	= new createjs.Bitmap(event.result);
+					var a = imgCurrency.getBounds();
+					imgCurrency.x = (FAR_ANCHOR) + 50;
+					imgCurrency.y = (FAR_ANCHOR << 1) + 85;
+					imgCurrency.scaleX = imgCurrency.scaleY = 1.5;
+					finish_containerbox.addChild(imgCurrency);
+				}else
+				if(event.item.id == "hacker")
+				{
+					//create bitmap here
+					var imgCurrency	= new createjs.Bitmap(event.result);
+					var a = imgCurrency.getBounds();
+					imgCurrency.x = 0;
+					imgCurrency.y = (FAR_ANCHOR << 2) + 100;
+					imgCurrency.scaleX = imgCurrency.scaleY = 1;
+					finish_containerbox.addChild(imgCurrency);
+				}
+				break;
+			case GAME_STATE_PLAY:
+				if(event.item.id == "digicode")
+				{
+					var imgDigiCode	= new createjs.Bitmap(event.result);
+					var a = imgDigiCode.getBounds();
+					imgDigiCode.x = 75;//((canvasW-a.width)/2);
+					imgDigiCode.y = (FAR_ANCHOR<<1);
+					//imgDigiCode.on("click",main_debug.Button_onClick);
+					imgDigiCode.scaleX = imgDigiCode.scaleY = 0.8;
+					finish_containerbox.addChild(imgDigiCode);
+				}
+				else
+				if(event.item.id == "pgframe")
+				{
+					var imgPgFrame	= new createjs.Bitmap(event.result);
+					var a = imgPgFrame.getBounds();
+					imgPgFrame.x = 75;//((canvasW-a.width)/2);
+					imgPgFrame.y = (FAR_ANCHOR << 2) + 100;
+					imgPgFrame.scaleX = imgPgFrame.scaleY = 0.8;
+					finish_containerbox.addChild(imgPgFrame);
+				}
+				else
+				if(event.item.id == "bg")
+				{
+					var imgSplash	= new createjs.Bitmap(event.result);
+					var a = imgSplash.getBounds();
+					bgBounds = a;
+					imgSplash.x = 0;//((canvasW-a.width)/2);
+					finish_containerbox.addChild(imgSplash);
+				}else
+				if(event.item.id == "txtbox")
+				{
+					var imgTextBox	= new createjs.Bitmap(event.result);
+					var a = imgTextBox.getBounds();
+					bgBounds = a;
+					imgTextBox.on("click",main_debug.Button_onClick);
+					imgTextBox.x = 30;
+					imgTextBox.y = (FAR_ANCHOR<<1) + 50;
+					imgTextBox.scaleX = imgTextBox.scaleY = 0.8;
+					finish_containerbox.addChildAt(imgTextBox,3);
 				}
 				break;
 			case GAME_STATE_FINISH:
 				if(event.item.id == "actButton")
 				{
-					console.log("-->>Action Button is loaded");
-					//create bitmap here
 					var imgActButton	= new createjs.Bitmap(event.result);
 					var a = imgActButton.getBounds();
-					imgActButton.x =((480-a.width)/2);
-					imgActButton.y = 800-150;//((canvasH - a.heigth));
-					console.log("---->>handleFileLoad imgActButton: " + a);
+					imgActButton.x = MED_ANCHOR;//((canvasW-a.width)/2);
+					imgActButton.y = (FAR_ANCHOR<<3) - 150;
 					imgActButton.on("click",main_debug.Button_onClick);
 					finish_containerbox.addChild(imgActButton);
 				}
@@ -250,33 +280,27 @@ function UI_Preload()
 					//create bitmap here
 					var imgMsgBox	= new createjs.Bitmap(event.result);
 					var a = imgMsgBox.getBounds();
-					imgMsgBox.x = 0;//((canvasW - a.width)/2);
-					//console.log("---->>handleFileLoad imgMsgBox: " + a);
+					imgMsgBox.x = SIDE_ANCHOR<<1;//((canvasW-a.width)/2);
 					finish_containerbox.addChild(imgMsgBox);
 				}
 				else
 				if(event.item.id == "bg")
 				{
-					//console.log("-->>Background is loaded");
 					//create bitmap here
 					var imgSplash	= new createjs.Bitmap(event.result);
 					var a = imgSplash.getBounds();
 					bgBounds = a;
-					imgSplash.x = 0;//((canvasW - a.width)/2);
-					//console.log("-->>handleFileLoad imgSplash: " + a.width);
+					imgSplash.x = 0;//((canvasW-a.width)/2);
 					finish_containerbox.addChild(imgSplash);
 				}
 				else
 				if(event.item.id == "visaLogo")
 				{
-					//console.log("Visa Logo is loaded");
 					//create bitmap here
 					var imgVisa	= new createjs.Bitmap(event.result);
 					var a = imgVisa.getBounds();
-					imgVisa.x = SIDE_ANCHOR << 2;//((canvasW - a.width)/2);
-					imgVisa.y = ((canvasH - a.height) + (BOTTOM_ANCHOR << 1));
-					//imgVisa.y = bgBounds.height - a.height;
-					//console.log("handleFileLoad imgVisa: " + a);
+					imgVisa.x = SIDE_ANCHOR<<2;//((FAR_ANCHOR*5 + a.width)/2);
+					imgVisa.y = (((FAR_ANCHOR<<1) + a.height));
 					finish_containerbox.addChild(imgVisa);
 				}
 				break;
@@ -286,16 +310,9 @@ function UI_Preload()
 		
 	
 		//Scale and contains the manifest to the stage
-		//finish_containerbox.scaleY = window.innerHeight/800;
-		//finish_containerbox.scaleX = window.innerWidth/480;
-		console.log("Window InnerSize w,h : " + window.innerWidth + "," +window.innerHeight);
 		finish_containerbox.scaleX = finish_containerbox.scaleY = Math.min(window.innerHeight/800,window.innerWidth/480);
 		//;
-		main_debug.Update_Game();
-		//mainContainer.addChildAt(finish_containerbox);
-		//module.setImg( mainStage, mainContainer, 0, 0 );
-		//createjs.Ticker.setFPS(30);
-		//createjs.Ticker.addEventListener("tick",mainStage);
+		main_debug.showUI();
 	}
 	
 	function loadError(evt) 
@@ -308,19 +325,19 @@ function UI_Preload()
 		mainStage.update();
 	}
 	 
-	
-	 
-	function loadComplete(event) {
+	function loadComplete(event) 
+	{
 		console.log("Finished Loading Assets");
+		main_debug.Update_Game();
 	}
 	this.Init_Builder = function()
 	{
+		console.log("Init_Buidler()");
 		mainStage = new createjs.Stage(document.getElementById("testCanvas"));
 		mainCanvas = document.getElementById("testCanvas");
 		
 		mainCanvas.width =  window.innerWidth;
 		mainCanvas.height =  window.innerHeight;
-		console.log("Init_Builder -->> Main Canvas : " + mainCanvas.width +","+mainCanvas.height);
 		finish_containerbox = new createjs.Container();
 		setupManifest();
 		startPreload();

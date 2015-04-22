@@ -20,15 +20,17 @@
 	const	GAME_STATE_TUTORIAL	=	1<<1;
 	const	GAME_STATE_PLAY		=	1<<2;
 	const	GAME_STATE_FINISH	=	1<<3;
-	var		m_currentState 			= 0;
-	
+	var		m_currentState 		=	0;
+	var 	gOver 				=	false;
 	//anchor for reposition
 	const TOP_ANCHOR	=	10;
 	const BOTTOM_ANCHOR	=	10;
 	const SIDE_ANCHOR	=	10;
+	const FAR_ANCHOR	=	100;
+	const MED_ANCHOR	=	50;
 	
 	var initialXpos = 0;
-	var mainCanvas 		= null;
+	var mainCanvas 	= null;
 	var mainStage	= null;
 	var mainContainer = new createjs.Container(); //main container for game screen
 	
@@ -36,7 +38,7 @@
 		[
 			{file:	"", 			volume:	1},
 			{file:	"", 			volume:	1},
-			{file:	"",	volume:	1}
+			{file:	"",				volume:	1}
 		];
 
 	var COUNTRY	=	
@@ -51,6 +53,29 @@
 		};
 	
 	var m_unknown_country = false;
+	
+	//Text
+	var TEXT={
+    EN: {
+			//Message box text
+			SPLASH_TEXT_MSG_1:	'ENTER INTO THE SKIN OF A CREDIT CARD HACKER BY PLAYING A QUICK MINIGAME!',
+			FINISH_TEXT_WIN_MSG_1:	'YOU HAVE HACKED THE CODE BUT VISA HAS NOT VERIFIED YOUR IDENTITY,YOU CANNOT PROCCED',
+			FINISH_TEXT_WIN_MSG_2:	'WITH VISA YOUR TRANSACTION IS ALWAYS SECURED',
+			FINISH_TEXT_LOSE_MSG_1:	'YOU HAVE FAILED!\n VISA SECURITY CAN NOT BE BREACHED',
+			FINISH_TEXT_LOSE_MSG_2:	'TRY AGAIN NEXT TIME!\n TAKE A CLOSER LOOK ON VISA WEBSITE',
+			GP_TEXT_TUTORIAL_1: 'FOLLOW THE SEQUENCES OF SELECTED NUMBERS TO HACK INTO VISA SECURITY!',
+			GP_TEXT_TUTORIAL_2 : 'CLICK THIS BOX TO CONTINUE',
+			//Button text
+			FINISH_TEXT_CERTIFIED:	'GET CERTIFIED',
+			FINISH_TEXT_CERTIFIED_2:	'GO TO VISA WEBSITE',
+			SPLASH_TEXT_HACK:		'HACK',
+			GET_TEXT:	'GET 5',
+			
+        },
+    FR: {
+            
+        },
+	}
 	
 	function GetCurrentCountry()
 	{

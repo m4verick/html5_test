@@ -15,130 +15,78 @@
     this state triggered when user finish the game (whether success or failed)
 */
 
-var isWin = false;
-var stage = null;
-var canvas = null;
-
+var isWin 		= false;
+var stage 		= null;
+var indexImg 	= 0;
+var containerHackBtn;
 var polygonGlow;
-var containerCertifBtn;
-
-var imgMsgBox_posX, imgActionButton_posX;
 
 function GS_Finish()
 {
 	this.GS_Finish_Init = function()
 	{
-		stage = new createjs.Stage(document.getElementById("testCanvas"));
-
-		stage.removeAllEventListeners();
-		console.log("Finish_Init()");
-		containerCertifBtn = new createjs.Container();
-
-	//	canvas = document.getElementById("testCanvas");
-	//	canvas.width = window.innerWidth; // x
-	//	canvas.height = window.innerHeight; // y
-
-		var imgSplash	= new createjs.Bitmap("assets/images/splash_bg.png");
-		imgSplash.image.onload = module.setImg(stage, imgSplash, 300, 0);
-
-		//load message box
-		var imgMsgBox	= new createjs.Bitmap("assets/images/message_box.png");
-		imgMsgBox_posX = 330;
-		imgSplash.image.onload = module.setImg(stage, imgMsgBox, imgMsgBox_posX, 20);
-    setTextHackButton();
-
-		//load VISA certified
-		var imgVisa		= new createjs.Bitmap("assets/images/Visa_logo.png");
-		//console.log("imgVisa x : " + imgVisa.image.height);
-		imgSplash.image.onload = module.setImg(stage, imgVisa, 330, 460);
-
-		//load action button
-		var imgActionButton		= new createjs.Bitmap("assets/images/hack_button.png");
-		imgActionButton_posX = 400;
-		imgSplash.image.onload = module.setImg(stage, imgActionButton, imgActionButton_posX, 660);
-		imgActionButton.scaleX = imgActionButton.scaleY = 0.75;
-		imgActionButton.addEventListener("click",onButtonClick);
-
-		setCertifiedGlow();
-
-		setTextGetCertifiedButton();
-
-	    createjs.Ticker.setFPS(30);
-	    createjs.Ticker.addEventListener("tick",stage);
-	}
-
-	// reinit when browser width / height changed
-	/*window.addEventListener("resize", function()
+		var finishtxt_msg1;
+		var finishtxt_msg2;
+		var finishtxt_button;
+		var fsize;
+		var alignY = 0;
+		var alignX = 0;
+		
+		if (gOver)
 		{
-			stage.canvas.width = window.innerWidth;
-	    	stage.canvas.height = window.innerHeight;
-			imgSplash.image.onload = module.setImg(stage, imgSplash, canvas.width/2, 0);
-			imgSplash.image.onload = module.setImg(stage, imgMsgBox, (canvas.width/2)+30, canvas.height-(canvas.height-20));
-			setTextHackButton();
-			imgSplash.image.onload = module.setImg(stage, imgVisa, (canvas.width/2)+35, canvas.height-(canvas.height-300));
-			imgSplash.image.onload = module.setImg(stage, imgActionButton, (canvas.width/2)+40, canvas.height-(canvas.height-500));
-			setTextGetCertifiedButton();
-			stage.update();
-		});
-*/
-
-	function setTextHackButton()
-	{
-	  var FINISH_TEXT_WIN_MSG_1 = 'YOU HAVE HACKED THE CODE BUT VISA HAS NOT VERIFIED YOUR IDENTITY,YOU CANNOT PROCCED \n\n WITH VISA YOUR TRANSACTION IS ALWAYS SECURED'
-	  var textHack = new createjs.Text(FINISH_TEXT_WIN_MSG_1, '35px Hacker', "#fff");
-	  textHack.x = imgMsgBox_posX + 200;
-	  textHack.y = 90;
-	  textHack.lineWidth = 450;
-	  textHack.textAlign = "center";
-	  textHack.scaleX = textHack.scaleY = 0.75;
-	  stage.addChild(textHack);
-	  stage.update();
+			finishtxt_msg1		= TEXT.EN.FINISH_TEXT_LOSE_MSG_1;
+			finishtxt_msg2		= TEXT.EN.FINISH_TEXT_LOSE_MSG_2;
+			finishtxt_button	= TEXT.EN.FINISH_TEXT_CERTIFIED_2;
+			fsize 				= "40px Hacker";
+			alignY 				= 10;
+			
+		}
+		else
+		{
+			finishtxt_msg1		= TEXT.EN.FINISH_TEXT_WIN_MSG_1;
+			finishtxt_msg2		= TEXT.EN.FINISH_TEXT_WIN_MSG_2;
+			finishtxt_button	= TEXT.EN.FINISH_TEXT_CERTIFIED;
+			fsize 				= "50px Hacker";
+		}
+		console.log("Finish_Init()");
+		module.drawString( finishtxt_msg1 , "25px Hacker", "#ffffff", (FAR_ANCHOR<<1) + MED_ANCHOR , (TOP_ANCHOR << 3) + alignY, finish_containerbox, 250,'center')
+		
+		module.drawString( finishtxt_msg2 , "25px Hacker", "#ffffff", (FAR_ANCHOR<<1) + MED_ANCHOR , (TOP_ANCHOR << 5) - 110, finish_containerbox, 250,'center')
+		
+		module.drawString( finishtxt_button , fsize, "#ffffff", (FAR_ANCHOR<<1) + (MED_ANCHOR - SIDE_ANCHOR), (TOP_ANCHOR << 6) + 25 + alignY, finish_containerbox, 0,'center');
+		
+		setHackGlow();
 	}
 
-	function setCertifiedGlow()
+	this.onButtonClick = function(e)
 	{
-	  polygonGlow = new createjs.Shape();
-	  //hexShape.beginFill("#005F54").drawPolyStar(posX,posY,31,6,0,-90);
-	  polygonGlow.graphics.beginFill("#E87300");
-	  polygonGlow.graphics.moveTo(0,0).lineTo(0,50).lineTo(15,63).lineTo(277,63).lineTo(277,24).lineTo(254,0).lineTo(0,0);//.lineTo(0,0);
-	  polygonGlow.alpha = 0.01;
-	  containerCertifBtn.addChild(polygonGlow);
-		containerCertifBtn.x = 400;
-		containerCertifBtn.y = 660;
-	  stage.addChild(containerCertifBtn);
-	  stage.update();
+		console.log(" This should exit the game!!");
+		createjs.Tween.get(polygonGlow).to({alpha:0.7},300).to({alpha:0.01}).call(onHackGlowFinish);
 	}
-
-
-	function setTextGetCertifiedButton()
-	{
-	  var FINISH_TEXT_CERTIFIED = 'GET CERTIFIED';
-	  var textCertified = new createjs.Text(FINISH_TEXT_CERTIFIED, '40px Hacker', "#fff");
-	  textCertified.x = imgActionButton_posX + 140;
-	  textCertified.y = 670;
-	  textCertified.textAlign = "center";
-	  //textCertified.scaleX = textCertified.scaleY = 0.75;
-	  stage.addChild(textCertified);
-	  stage.update();
-	}
-
-	//Exit the game
-	function onButtonClick(e)
-	{
-		createjs.Tween.get(polygonGlow).to({alpha:0.7},300).to({alpha:0.01}).call(onCertifGlowFinish);
-	}
-
-	function onCertifGlowFinish()
+	
+	function onHackGlowFinish()
 	{
 		window.open("http://www.visa.com", "_blank");
-		console.log(" This should exit the game!!");
+		mainStage.removeAllEventListeners();		
 	}
-
-	this.GS_Finish_OnExit = function(e)
+	function setHackGlow()
 	{
+		polygonGlow = new createjs.Shape();
+		polygonGlow.graphics.beginFill("#E87300");
+		polygonGlow.graphics.moveTo(-47,3).lineTo(-47,67).lineTo(-28,85).lineTo(320,85).lineTo(320,32).lineTo(290,3).lineTo(0,0);//.lineTo(0,0);
+		polygonGlow.alpha = 0.01;
+		polygonGlow.x = FAR_ANCHOR;
+		polygonGlow.y = (FAR_ANCHOR<<3) - 150;
+		finish_containerbox.addChild(polygonGlow);
+		containerHackBtn.x = 0;
+		containerHackBtn.y = 0;
+		finish_containerbox.addChild(containerHackBtn);
+		mainStage.update();
+		createjs.Ticker.setFPS(30);
+		createjs.Ticker.addEventListener("tick",mainStage);
 
 	}
+	
 }
-
 
 var GS_Finish = new GS_Finish;

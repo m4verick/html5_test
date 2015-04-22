@@ -22,7 +22,10 @@ function Tutorial_Init()
 	var imgGame = new createjs.Bitmap("assets/images/main_bg_2.png");
 	var imgGameX = 300;
 	var imgGameY = 0;
-	imgGame.image.onload = setImg(stage, imgGame, imgGameX, imgGameY);
+	imgGame.onload = function(){
+		console.log(imgGame.width);
+	}
+	imgGame.image.onload = module.setImg(stage, imgGame, imgGameX, imgGameY);
 	
 	var textContent = "How to Play\n\nla la la la la\nla la la la la\nla la la la la\nla la la la la\nla la la la la";
 	var textHowTo = new createjs.Text(textContent, "20px Arial", "#ff69b4");

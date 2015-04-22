@@ -19,7 +19,7 @@ var timer = 3600;
 var textTimer;
 var stage;
 
-var digitCombination = [-1,-1,-1,-1];
+var digitCombination = [];
 var userTouch = [-1,-1,-1,-1];
 var containerbox;
 
@@ -280,7 +280,7 @@ function GS_Gameplay()
 	function initArrayUser()
 	{
 	  userTouch = [-1,-1,-1,-1];
-	  digitCombination = [-1,-1,-1,-1];
+	  digitCombination = [];
 	  result = [-1,-1,-1,-1];
 	  digitIndex = 0;
 	  generateDigitCombination();
@@ -371,10 +371,16 @@ function GS_Gameplay()
 	  var maximum = 9;
 	
 	  var inc = 0;
+	  digitCombination = [];
 	  while(inc < 4)
 	  {
-		digitCombination[inc] = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-		inc++;
+		var randomNumber = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+		
+		if(digitCombination.indexOf(randomNumber) == -1)
+			{
+				digitCombination.push(randomNumber);
+				inc++;
+			}
 	  }
 	 
 	  console.log(digitCombination.toString());

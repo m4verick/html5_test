@@ -55,11 +55,12 @@ function UI_Preload()
 				{
 					src: imgPath + "currency_icon_large.png",
 					id: "currency"
-				},
+				}
+				/*,
 				{
 					src: imgPath + "hacker.png",
 					id: "hacker"
-				}
+				}*/
 				];
 				break;
 			case GAME_STATE_TUTORIAL:
@@ -209,7 +210,8 @@ function UI_Preload()
 					imgCurrency.y = (FAR_ANCHOR << 1) + 85;
 					imgCurrency.scaleX = imgCurrency.scaleY = 1.5;
 					finish_containerbox.addChild(imgCurrency);
-				}else
+				}/*
+				else
 				if(event.item.id == "hacker")
 				{
 					//create bitmap here
@@ -219,7 +221,7 @@ function UI_Preload()
 					imgCurrency.y = (FAR_ANCHOR << 2) + 100;
 					imgCurrency.scaleX = imgCurrency.scaleY = 1;
 					finish_containerbox.addChild(imgCurrency);
-				}
+				}*/
 				break;
 			case GAME_STATE_PLAY:
 				if(event.item.id == "digicode")

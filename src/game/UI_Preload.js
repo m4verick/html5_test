@@ -28,6 +28,7 @@ function UI_Preload()
 	{
 		var tempManifest;
 		var imgPath = "assets/images/";
+		var sfxPath = "assets/sounds/";
 		if(m_currentState <= 0)
 		{
 			m_currentState = GAME_STATE_SPLASH;
@@ -55,6 +56,10 @@ function UI_Preload()
 				{
 					src: imgPath + "currency_icon_large.png",
 					id: "currency"
+				},
+				{
+					src: sfxPath + "Game-Break.ogg",
+					id: "sfxStart"
 				}
 				/*,
 				{
@@ -140,12 +145,13 @@ function UI_Preload()
 	function startPreload() 
 	{
 		preload = new createjs.LoadQueue(true);
-		//preload.installPlugin(createjs.Sound);          
+		preload.installPlugin(createjs.Sound);          
 		preload.on("fileload", handleFileLoad);
 		preload.on("progress", handleFileProgress);
 		preload.on("complete", loadComplete);
 		preload.on("error", loadError);
 		preload.loadManifest(manifest);	 
+
 	}
 	
 	function handleFileLoad(event) 

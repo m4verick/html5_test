@@ -37,6 +37,7 @@ function GS_Splash()
 	this.onButtonClick = function(e)
 	{
 		console.log(" This should start the game!!");
+		createjs.Sound.play("sfxButton");
 		createjs.Tween.get(polygonGlow).to({alpha:0.7},300).to({alpha:0.01}).call(onHackGlowFinish);
 	}
 	function onHackGlowFinish()

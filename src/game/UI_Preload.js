@@ -28,6 +28,7 @@ function UI_Preload()
 	{
 		var tempManifest;
 		var imgPath = "assets/images/";
+		var sfxPath = "assets/sounds/sfx/";
 		if(m_currentState <= 0)
 		{
 			m_currentState = GAME_STATE_SPLASH;
@@ -55,12 +56,37 @@ function UI_Preload()
 				{
 					src: imgPath + "currency_icon_large.png",
 					id: "currency"
-				}
+				},
 				/*,
 				{
 					src: imgPath + "hacker.png",
 					id: "hacker"
-				}*/
+				},*/
+				//also do sound assets preload in here!
+				{
+					src: sfxPath + "sfx_confirmButton.mp3",
+					id: "sfxButton"
+				},
+				{
+					src: sfxPath + "sfx_correctGuess.mp3",
+					id: "sfxCorrect"
+				},
+				{
+					src: sfxPath + "sfx_wrongGuess.mp3",
+					id: "sfxWrong"
+				},
+				{
+					src: sfxPath + "sfx_success.mp3",
+					id: "sfxSuccess"
+				},
+				{
+					src: sfxPath + "sfx_failed.mp3",
+					id: "sfxFailed"
+				},
+				{
+					src: sfxPath + "sfx_bgm.mp3",
+					id: "sfxBgm"
+				}
 				];
 				break;
 			case GAME_STATE_TUTORIAL:
@@ -140,12 +166,13 @@ function UI_Preload()
 	function startPreload() 
 	{
 		preload = new createjs.LoadQueue(true);
-		//preload.installPlugin(createjs.Sound);          
+		preload.installPlugin(createjs.Sound);          
 		preload.on("fileload", handleFileLoad);
 		preload.on("progress", handleFileProgress);
 		preload.on("complete", loadComplete);
 		preload.on("error", loadError);
 		preload.loadManifest(manifest);	 
+
 	}
 	
 	function handleFileLoad(event) 

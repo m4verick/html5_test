@@ -28,7 +28,7 @@ function UI_Preload()
 	{
 		var tempManifest;
 		var imgPath = "assets/images/";
-		var sfxPath = "assets/sounds/";
+		var sfxPath = "assets/sfx/";
 		if(m_currentState <= 0)
 		{
 			m_currentState = GAME_STATE_SPLASH;
@@ -58,7 +58,7 @@ function UI_Preload()
 					id: "currency"
 				},
 				{
-					src: sfxPath + "Game-Break.ogg",
+					src: sfxPath + "sfx_start.mp3",
 					id: "sfxStart"
 				}
 				/*,

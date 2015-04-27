@@ -24,21 +24,20 @@ function GS_Splash()
 	this.GS_Splash_Init = function()
 	{
 		console.log("Splash_Init()");
-		//createjs.Sound.play("sfxStart");
+		createjs.Sound.play("sfxStart");
 		containerHackBtn = new createjs.Container();
 		module.drawString( TEXT.EN.SPLASH_TEXT_MSG_1 , "25px Hacker", "#ffffff", (MED_ANCHOR) , (FAR_ANCHOR) + 150, finish_containerbox, 250, 'left');
-
+		
 		module.drawString( TEXT.EN.GET_TEXT , "50px Hacker", "#ffffff", (FAR_ANCHOR) - SIDE_ANCHOR, (FAR_ANCHOR << 2) - 50, finish_containerbox, 0, 'left');
-
+		
 		module.drawString( TEXT.EN.SPLASH_TEXT_HACK , "50px Hacker", "#ffffff", (FAR_ANCHOR<<1) - SIDE_ANCHOR, (FAR_ANCHOR << 2) + 160, finish_containerbox, 0, 'left');
 		 setHackGlow();
 	}
-
-
+	
+	
 	this.onButtonClick = function(e)
 	{
 		console.log(" This should start the game!!");
-		createjs.Sound.play("sfxStart");
 		createjs.Tween.get(polygonGlow).to({alpha:0.7},300).to({alpha:0.01}).call(onHackGlowFinish);
 	}
 	function onHackGlowFinish()

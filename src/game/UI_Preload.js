@@ -28,7 +28,6 @@ function UI_Preload()
 	{
 		var tempManifest;
 		var imgPath = "assets/images/";
-		var sfxPath = "assets/sounds/";
 		if(m_currentState <= 0)
 		{
 			m_currentState = GAME_STATE_SPLASH;
@@ -56,10 +55,6 @@ function UI_Preload()
 				{
 					src: imgPath + "currency_icon_large.png",
 					id: "currency"
-				},
-				{
-					src: sfxPath + "Game-Break.mp3",
-					id: "sfxStart"
 				}
 				/*,
 				{
@@ -109,7 +104,7 @@ function UI_Preload()
 				];
 				break;
 			case GAME_STATE_FINISH:
-				tempManifest = [
+				tempManifest = [  
 				{
 					src: imgPath + "splash_bg.png",
 					id: "bg"
@@ -125,7 +120,7 @@ function UI_Preload()
 				{
 					src: imgPath + "message_box_w_border.png",
 					id: "msgBox"
-				},
+				}, 
 				{
 					src: imgPath + "hack_button.png",
 					id: "actButton"
@@ -142,19 +137,18 @@ function UI_Preload()
 		startPreload();
 		console.log("callPreload state:" + m_currentState);
 	}
-	function startPreload()
+	function startPreload() 
 	{
 		preload = new createjs.LoadQueue(true);
-		preload.installPlugin(createjs.Sound);
+		//preload.installPlugin(createjs.Sound);          
 		preload.on("fileload", handleFileLoad);
 		preload.on("progress", handleFileProgress);
 		preload.on("complete", loadComplete);
 		preload.on("error", loadError);
-		preload.loadManifest(manifest);
-
+		preload.loadManifest(manifest);	 
 	}
-
-	function handleFileLoad(event)
+	
+	function handleFileLoad(event) 
 	{
 		//console.log("A file has loaded of type: " + event.item.type);
 		var bgBounds;
@@ -315,25 +309,25 @@ function UI_Preload()
 			default:
 				console.log("handleFileLoad error : state not found!");
 		}
-
-
+		
+	
 		//Scale and contains the manifest to the stage
 		finish_containerbox.scaleX = finish_containerbox.scaleY = Math.min(window.innerHeight/800,window.innerWidth/480);
 		//;
 		main_debug.showUI();
 	}
-
-	function loadError(evt)
+	
+	function loadError(evt) 
 	{
 		console.log("Error!",evt.text);
 	}
-
-	function handleFileProgress(event)
+	 
+	function handleFileProgress(event) 
 	{
 		mainStage.update();
 	}
-
-	function loadComplete(event)
+	 
+	function loadComplete(event) 
 	{
 		console.log("Finished Loading Assets");
 		main_debug.Update_Game();
@@ -343,15 +337,15 @@ function UI_Preload()
 		console.log("Init_Buidler()");
 		mainStage = new createjs.Stage(document.getElementById("testCanvas"));
 		mainCanvas = document.getElementById("testCanvas");
-
+		
 		mainCanvas.width =  window.innerWidth;
 		mainCanvas.height =  window.innerHeight;
 		finish_containerbox = new createjs.Container();
 		setupManifest();
 		startPreload();
-		mainStage.update();
+		mainStage.update();	
 	}
-
+	
 }
 
 var UI_Preload = new UI_Preload();

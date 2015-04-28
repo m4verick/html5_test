@@ -278,7 +278,6 @@ function GS_Gameplay()
 	  for(var i=0;i<10;i++)
 	  {
 			containerbox.getChildByName(i).alpha = 0.01;
-		console.log("alpha "+i+" : " + containerbox.getChildByName(i).alpha);
 	  }
 	}
 
@@ -302,34 +301,19 @@ function GS_Gameplay()
 			createjs.Tween.get(containerbox.getChildByName(targetName.name)).to({alpha:0.7},200).to({alpha:0.01});
 	}
 
-	function resetLastGlowTouch(targetName)
+	function setResultAnimationGlow(color, correct)
 	{
+		if(correct == true)
+			createjs.Sound.play("sfxCorrect");
+		else
+			createjs.Sound.play("sfxWrong");
 
-		containerbox.getChildByName(targetName.name).alpha = 0.01;
-		console.log("targetName : "+containerbox.getChildByName(targetName.name));
-	}
-
-	function setResultAnimationCorrectGlow()
-	{
-		createjs.Sound.play("sfxCorrect");
 		var resultGlowCorrect = new createjs.Graphics();
-		resultGlowCorrect.beginFill("#01B9A1").drawRect(0,0,tempWidthBg,tempHeightBg);
+		resultGlowCorrect.beginFill(color).drawRect(0,0,tempWidthBg,tempHeightBg);
 		var shapeGlowCorrect = new createjs.Shape(resultGlowCorrect);
 		shapeGlowCorrect.alpha = 0.01;
 		finish_containerbox.addChild(shapeGlowCorrect);
 		createjs.Tween.get(shapeGlowCorrect).to({alpha:0.7},100).to({alpha:0.01},100).to({alpha:0.7},100).to({alpha:0.01});
-
-	}
-
-	function setResultAnimationWrongGlow()
-	{
-		createjs.Sound.play("sfxWrong");
-		var resultGlowWrong = new createjs.Graphics();
-		resultGlowWrong.beginFill("#FF0000").drawRect(0,0,tempWidthBg,tempHeightBg);
-		var shapeGlowWrong = new createjs.Shape(resultGlowWrong);
-		shapeGlowWrong.alpha = 0.01;
-		finish_containerbox.addChild(shapeGlowWrong);
-		createjs.Tween.get(shapeGlowWrong).to({alpha:0.7},100).to({alpha:0.01},100).to({alpha:0.7},100).to({alpha:0.01});
 	}
 
 	function onHexClick(e)
@@ -337,7 +321,6 @@ function GS_Gameplay()
 		var target = e.target;
 		var sfxClick_prefix = "sfxClick";
 		console.log("target name : "+target.name);
-		//glowTouch(target);
 		countCombine++;
 		glowTouch(target);
 		digitIndex++;
@@ -348,13 +331,13 @@ function GS_Gameplay()
 		{
 			console.log("countCombine : "+countCombine);
 			console.log("digitIndex : "+digitIndex);
+			//correct guess
 			if(userTouch.toString() == digitCombination.toString())
 			{
-				//resetLastGlowTouch(target);
 				console.log("countCombine before : "+countCombine);
 				console.log("digitIndex before : "+digitIndex);
 				console.log("BENAR");
-				setResultAnimationCorrectGlow();
+				setResultAnimationGlow("#01B9A1",true);
 				roundStageIncrease();
 				initArrayUser();
 				console.log("countCombine after: "+countCombine);
@@ -366,13 +349,13 @@ function GS_Gameplay()
 			}
 			else
 			{
+				//wrong guess
 				if (roundStage >= 0)
-			  	{
-					//resetLastGlowTouch(target);
+			  {
 					console.log("countCombine 2: "+countCombine);
 					console.log("digitIndex 2: "+digitIndex);
 					console.log("RoundStage : "+roundStage);
-					setResultAnimationWrongGlow();
+					setResultAnimationGlow("#FF0000",false);
 					roundStageDecrease();
 					initArrayUser();
 					console.log("countCombine 3: "+countCombine);

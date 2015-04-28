@@ -12,62 +12,50 @@
     |--game ... (you are here)
 */
 
-//DEFINE GLOBAL VAR in here
 var m_font = "Arial";
 var textHowTo;
-//GLOBAL VAR END
+
 function module()
 {
-	//var textHowTo = new createjs.Text(textContent_1, "25px Hacker", "#ff69b4");
 	this.drawString = function(textToDraw, props, color, posX, posY, containerbox, lineW, aligns)
 	{
 		console.log("Draw String");
-		var textContent_1 = textToDraw;
-		textHowTo = new createjs.Text(textContent_1, props, color);
-
-		var w = ( textHowTo.getMeasuredWidth() ) * textHowTo.scaleX;
-		var h = ( textHowTo.getMeasuredHeight() ) * textHowTo.scaleY;
-				
-		//textHowTo.regY = h / 2;
-		textHowTo.textAlign = aligns; 
-		if (lineW > 0)
-			textHowTo.lineWidth = lineW;
+		textContent = new createjs.Text(textToDraw, props, color);
+		var w = ( textContent.getMeasuredWidth() ) * textContent.scaleX;
+		var h = ( textContent.getMeasuredHeight() ) * textContent.scaleY;
+		textContent.textAlign = aligns; 
 		
-		//textHowTo.font = 'assets/fonts/Elite Hacker (Corroded).ttf';
-		textHowTo.x = posX;
-		textHowTo.y = posY;
-		containerbox.addChild(textHowTo);
+		//Check if need multiline
+		if (lineW > 0)
+		{
+			textContent.lineWidth = lineW;
+		}
+		textContent.x = posX;
+		textContent.y = posY;
+		containerbox.addChild(textContent);
 	}
 
-	//function moveCenter()
-	//{
-		this.MoveToCenterY = function(spriteObject, screenHeight)
+	this.MoveToCenterY = function(spriteObject, screenHeight)
+	{
+		if (!spriteObject)
 		{
-			if (!spriteObject)
-			{
-				spriteObject.Y = screenHeight/2;
-				return spriteObject.Y;
-			}
-
+			spriteObject.Y = screenHeight/2;
+			return spriteObject.Y;
 		}
 
-		this.MoveToCenterX = function(spriteObject, screenWidth)
-		{
-			if (!spriteObject)
-			{
-				spriteObject.X = screenWidth/2;
-				return spriteObject.X;
-			}
-		}
-//	}
+	}
 
+	this.MoveToCenterX = function(spriteObject, screenWidth)
+	{
+		if (!spriteObject)
+		{
+			spriteObject.X = screenWidth/2;
+			return spriteObject.X;
+		}
+	}
 
 	this.setImg = function(stage, img, x, y)
 	{
-		//scale = Math.min(canvas.width/768,canvas.height/1024);
-		//scale = this.resize(mainCanvas, 768, 1024);
-		//img.scaleX = img.scaleY = scale;
-		//this.MoveToCenterX(img, mainCanvas.width-img.width);
 		stage.addChild(img);
 		img.x = x;
 		img.y = y;
@@ -128,8 +116,6 @@ function module()
 		};
 	}
 
-	
-	
 	this.SetFont = function(font)
 	{
 		m_font = font;

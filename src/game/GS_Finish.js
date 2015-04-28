@@ -32,6 +32,9 @@ function GS_Finish()
 		var alignY = 0;
 		var alignX = 0;
 		
+		createjs.Sound.stop("sfxBgmGameplay");
+		createjs.Sound.play("sfxFinish");
+		
 		if (gOver)
 		{
 			finishtxt_msg1		= TEXT.EN.FINISH_TEXT_LOSE_MSG_1;
@@ -39,6 +42,7 @@ function GS_Finish()
 			finishtxt_button	= TEXT.EN.FINISH_TEXT_CERTIFIED_2;
 			fsize 				= "40px Hacker";
 			alignY 				= 10;
+			createjs.Sound.play("sfxWrong");
 			
 		}
 		else
@@ -47,6 +51,7 @@ function GS_Finish()
 			finishtxt_msg2		= TEXT.EN.FINISH_TEXT_WIN_MSG_2;
 			finishtxt_button	= TEXT.EN.FINISH_TEXT_CERTIFIED;
 			fsize 				= "50px Hacker";
+			createjs.Sound.play("sfxCorrect");
 		}
 		console.log("Finish_Init()");
 		module.drawString( finishtxt_msg1 , "25px Hacker", "#ffffff", (FAR_ANCHOR<<1) + MED_ANCHOR , (TOP_ANCHOR << 3) + alignY, finish_containerbox, 250,'center')

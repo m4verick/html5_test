@@ -17,9 +17,8 @@
 
 	//GAME STATES
 	const	GAME_STATE_SPLASH	=	1<<0;
-	const	GAME_STATE_TUTORIAL	=	1<<1;
-	const	GAME_STATE_PLAY		=	1<<2;
-	const	GAME_STATE_FINISH	=	1<<3;
+	const	GAME_STATE_PLAY		=	1<<1;
+	const	GAME_STATE_FINISH	=	1<<2;
 	var		m_currentState 		=	0;
 	var 	gOver 				=	false;
 	//anchor for reposition

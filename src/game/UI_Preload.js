@@ -66,6 +66,26 @@ function UI_Preload()
 				},*/
 				//also do sound assets preload in here!
 				{
+					src: sfxPath + "bgm_Splash.mp3",
+					id: "sfxBgmSplash"
+				},
+				{
+					src: sfxPath + "bgm_Gameplay.mp3",
+					id: "sfxBgmGameplay"
+				},
+				{
+					src: sfxPath + "sfx_click1.mp3",
+					id: "sfxClick1"
+				},
+				{
+					src: sfxPath + "sfx_click2.mp3",
+					id: "sfxClick2"
+				},
+				{
+					src: sfxPath + "sfx_click3.mp3",
+					id: "sfxClick3"
+				},
+				{
 					src: sfxPath + "sfx_confirmButton.mp3",
 					id: "sfxButton"
 				},
@@ -78,36 +98,12 @@ function UI_Preload()
 					id: "sfxWrong"
 				},
 				{
-					src: sfxPath + "sfx_success.mp3",
-					id: "sfxSuccess"
+					src: sfxPath + "sfx_Finish.mp3",
+					id: "sfxFinish"
 				},
 				{
-					src: sfxPath + "sfx_failed.mp3",
-					id: "sfxFailed"
-				},
-				{
-					src: sfxPath + "sfx_bgm.mp3",
-					id: "sfxBgm"
-				}
-				];
-				break;
-			case GAME_STATE_TUTORIAL:
-				tempManifest = [
-				{
-					src: imgPath + "splash_bg.png",
-					id: "bg"
-				},
-				{
-					src: imgPath + "message_box.png",
-					id: "msgBox"
-				},
-				{
-					src: imgPath + "cellphone.png",
-					id: "cellphone"
-				},
-				{
-					src: imgPath + "hack_button.png",
-					id: "actButton"
+					src: sfxPath + "sfx_showTutorial.mp3",
+					id: "sfxTutorial"
 				}
 				];
 				break;
@@ -217,6 +213,7 @@ function UI_Preload()
 					var a = imgSplash.getBounds();
 					bgBounds = a;
 					imgSplash.x = 0;//((canvasW-a.width)/2);
+					tempWidthBg = a.width;
 					finish_containerbox.addChild(imgSplash);
 				}
 				else
@@ -347,6 +344,7 @@ function UI_Preload()
 
 		//Scale and contains the manifest to the stage
 		finish_containerbox.scaleX = finish_containerbox.scaleY = Math.min(window.innerHeight/800,window.innerWidth/480);
+		
 		//;
 		main_debug.showUI();
 	}
@@ -364,6 +362,7 @@ function UI_Preload()
 	function loadComplete(event)
 	{
 		console.log("Finished Loading Assets");
+		finish_containerbox.x = (window.innerWidth - tempWidthBg)/2;
 		main_debug.Update_Game();
 	}
 	this.Init_Builder = function()

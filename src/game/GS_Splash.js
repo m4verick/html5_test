@@ -24,6 +24,7 @@ function GS_Splash()
 	this.GS_Splash_Init = function()
 	{
 		console.log("Splash_Init()");
+		createjs.Sound.play("sfxBgmSplash");
 		containerHackBtn = new createjs.Container();
 		module.drawString( TEXT.EN.SPLASH_TEXT_MSG_1 , "25px Hacker", "#ffffff", (MED_ANCHOR) , (FAR_ANCHOR) + 150, finish_containerbox, 250, 'left');
 		

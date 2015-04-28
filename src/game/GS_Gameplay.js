@@ -23,7 +23,7 @@ var digitCombination = [];
 var userTouch = [-1,-1,-1,-1];
 var containerbox;
 
-var digitIndex = 0;
+var digitIndex = -1;
 var result = [-1,-1,-1,-1]; // user touch store in arrays
 var found = false;
 var timerPause = false;
@@ -36,40 +36,43 @@ var wrongGuess = false;
 var colorHex = "#01B9A1";
 var text1;
 var box;
+
+var countCombine = 0;
+
 function GS_Gameplay()
 {
 	box = new createjs.Container();
 	this.GS_Gameplay_Init = function ()
 	{
-		
+
 		text1 = TEXT.EN.GP_TEXT_TUTORIAL_1;
 		textHowTo = new createjs.Text(text1, "30px Hacker", "#ffffff");
 
 		var w = ( textHowTo.getMeasuredWidth() ) * textHowTo.scaleX;
 		var h = ( textHowTo.getMeasuredHeight() ) * textHowTo.scaleY;
 
-		textHowTo.textAlign = 'center'; 
+		textHowTo.textAlign = 'center';
 		textHowTo.lineWidth = 300;
-		
+
 		textHowTo.x = (FAR_ANCHOR<<1)+50;
 		textHowTo.y = (FAR_ANCHOR<<1) + 100;
 		box.addChild(textHowTo);
-		
+
 		text1 = TEXT.EN.GP_TEXT_TUTORIAL_2;
 		textHowTo = new createjs.Text(text1, "15px Hacker", "#ffffff");
-		textHowTo.textAlign = 'center'; 
+		textHowTo.textAlign = 'center';
 		textHowTo.lineWidth = 300;
-		
+
 		textHowTo.x = (FAR_ANCHOR<<1)+50;
 		textHowTo.y = (FAR_ANCHOR<<1) + 250;
 		box.addChild(textHowTo);
 		finish_containerbox.addChild(box);
-		
+
 		//module.drawString( TEXT.EN.GP_TEXT_TUTORIAL_1 , "30px Hacker", "#ffffff", (FAR_ANCHOR<<1)+50, (FAR_ANCHOR<<1) + 100, finish_containerbox, 300, 'center');
-		
+
 		//module.drawString( TEXT.EN.GP_TEXT_TUTORIAL_2 , "15px Hacker", "#ffffff", (FAR_ANCHOR<<1)+50, (FAR_ANCHOR<<1) + 250, finish_containerbox, 200, 'center');
 	}
-	
+
 	this.onButtonClick = function(e)
 	{
 		console.log("This should exit the tutorial box!!");
@@ -90,26 +93,26 @@ function GS_Gameplay()
 	  touchAreaHex();
 	  setRoundStage();
 	  AISetCombination();
-	
+
 	  createjs.Ticker.setFPS(30);
 	  createjs.Ticker.addEventListener("tick",mainStage);
 	}
-	
+
 	var containerShape;
-	
+
 	function setRoundStage()
 	{
 		//01b9a1
 		var posXround = 0;//380;
 		var posYround = (FAR_ANCHOR << 2) + 135;
-		
+
 		var roundShape = new createjs.Graphics();
 		roundShape.beginFill("#01B9A1").drawCircle(0,0,20);
-		
+
 		var shapeRoundStage = new createjs.Shape(roundShape);
 		shapeRoundStage.alpha = 0;
 		containerShape = new createjs.Container();
-	
+
 		for(var i=0;i<5;i++)
 		{
 			var circClone = shapeRoundStage.clone();
@@ -117,61 +120,60 @@ function GS_Gameplay()
 			containerShape.addChildAt(circClone,i);
 			mappingInputTouch(mainStage,containerShape);
 		}
-	
+
 		containerShape.x = posXround;
 		containerShape.y = posYround;
-	
+
 		var tempPos = 110;
 		for (var i=0; i<5; i++)
 		{
 			containerShape.getChildAt(i).x = tempPos+(i*60)+(i+1);
-			//tempPos = containerShape.getChildAt(i).x;
 		}
-		
+
 		finish_containerbox.addChild(containerShape);
 	}
-	
+
 	function setContainer(stg)
 	{
 	  var score = new createjs.Container();
-	
+
 	  var imgGameTL = new createjs.Bitmap("assets/images/top_left.png");
 	  var imgGameBL = new createjs.Bitmap("assets/images/bottom_left.png");
 	  var imgGameBR = new createjs.Bitmap("assets/images/bottom_right.png");
 	  var imgGameTR = new createjs.Bitmap("assets/images/top_right.png");
-	
+
 	  score.addChild(imgGameTL, imgGameBL, imgGameBR, imgGameTR);
 	  imgGameTL.x = 300;
 	  imgGameTL.y = 500;
-	
+
 	  imgGameBL.x = 300;
 	  imgGameBL.y = 600;
-	
+
 	  imgGameBR.x = 650;
 	  imgGameBR.y = 600;
-	
+
 	  imgGameTR.x = 650;
 	  imgGameTR.y = 500;
-	
+
 	  score.x = -140;
 	  score.y = -340;
-	
-	  
+
+
 	  score.scaleX = score.scaleY = 0.75;
 	  finish_containerbox.addChild(score);
 	  stg.addChild(finish_containerbox);
 	  stg.update();
 	}
-	
+
 	function touchAreaHex()
 	{
 		posX = 231;
 		posY = (FAR_ANCHOR<<1) + 30;
-	
+
 		padding  = 1;
-	
+
 		var hexShape = new createjs.Graphics();
-		
+
 		if(wrongGuess)
 		{
 			colorHex = "#990000";
@@ -183,10 +185,10 @@ function GS_Gameplay()
 	  	var shape = new createjs.Shape(hexShape);
 	  	shape.alpha = 0.01;
 		containerbox = new createjs.Container();
-	
+
 		var l = 9;
 		var cols = 7;
-	
+
 		for(var i=0; i<=l; i++)
 		{
 			var hexClone = shape.clone();
@@ -247,20 +249,19 @@ function GS_Gameplay()
 			}
 		}
 	}
-	
+
 	function roundStageIncrease()
 	{
 	  roundStage++;
 	  createjs.Tween.get(containerShape.getChildAt(roundStage)).to({alpha:1});
 	}
-	
+
 	function roundStageDecrease()
 	{
 		createjs.Tween.get(containerShape.getChildAt(roundStage)).to({alpha:0});
 		roundStage--;
-	  
 	}
-	
+
 	function AISetCombination()
 	{
 		for(var i=0;i<4;i++)
@@ -268,82 +269,119 @@ function GS_Gameplay()
 			createjs.Tween.get(containerbox.getChildAt(digitCombination[i])).wait(500*(i+1)).to({alpha:0.7},500).to({alpha:0.01});
 		}
 	}
-	
+
 	function ClearAlpha()
 	{
 	  for(var i=0;i<10;i++)
 	  {
 		containerbox.getChildAt(i).alpha = 0.01;
+		console.log("alpha "+i+" : " + containerbox.getChildAt(i).alpha);
 	  }
 	}
-	
+
 	function initArrayUser()
 	{
+		ClearAlpha();
+		countCombine = 0;
 	  userTouch = [-1,-1,-1,-1];
 	  digitCombination = [];
 	  result = [-1,-1,-1,-1];
-	  digitIndex = 0;
+	  digitIndex = -1;
 	  generateDigitCombination();
-	  ClearAlpha();
 	  AISetCombination();
 	}
-	
+
 	function glowTouch(targetName)
 	{
-	  createjs.Tween.get(containerbox.getChildByName(targetName.name)).to({alpha:0.7},500).to({alpha:0.01});
+	  createjs.Tween.get(containerbox.getChildByName(targetName.name)).to({alpha:0.7});//,200).to({alpha:0.01});
 	}
-	
+
+	function resetLastGlowTouch(targetName)
+	{
+		containerbox.getChildByName(targetName.name).alpha = 0.01;
+		console.log("targetName : "+containerbox.getChildByName(targetName.name));
+	}
+
+	function setResultAnimationCorrectGlow()
+	{
+		var resultGlowCorrect = new createjs.Graphics();
+		resultGlowCorrect.beginFill("#01B9A1").drawRect(0,0,tempWidthBg,tempHeightBg);
+		var shapeGlowCorrect = new createjs.Shape(resultGlowCorrect);
+		shapeGlowCorrect.alpha = 0.01;
+		finish_containerbox.addChild(shapeGlowCorrect);
+		createjs.Tween.get(shapeGlowCorrect).to({alpha:0.7},100).to({alpha:0.01},100).to({alpha:0.7},100).to({alpha:0.01});
+
+	}
+
+	function setResultAnimationWrongGlow()
+	{
+		var resultGlowWrong = new createjs.Graphics();
+		resultGlowWrong.beginFill("#FF0000").drawRect(0,0,tempWidthBg,tempHeightBg);
+		var shapeGlowWrong = new createjs.Shape(resultGlowWrong);
+		shapeGlowWrong.alpha = 0.01;
+		finish_containerbox.addChild(shapeGlowWrong);
+		createjs.Tween.get(shapeGlowWrong).to({alpha:0.7},100).to({alpha:0.01},100).to({alpha:0.7},100).to({alpha:0.01});
+	}
+
 	function onHexClick(e)
 	{
 		var target = e.target;
 		console.log("target name : "+target.name);
 		glowTouch(target);
-		if (digitCombination[digitIndex] == target.name)
+		countCombine++;
+		digitIndex++;
+		userTouch[digitIndex] = target.name;
+		if(countCombine == 4)
 		{
-		  result[digitIndex] = digitCombination[digitIndex];
-		  digitIndex++;
-		  if(result.toString() == digitCombination.toString())
-		  {
-		
-			console.log("BENAR");
-			roundStageIncrease();
-			initArrayUser();
-			if (roundStage == USER_LEVEL)
+			console.log("countCombine : "+countCombine);
+			console.log("digitIndex : "+digitIndex);
+			if(userTouch.toString() == digitCombination.toString())
 			{
-			  timerPause = true;
-			  console.log("JUARAAAAAA LEVELLLLLLL");
+				resetLastGlowTouch(target);
+				console.log("countCombine  before : "+countCombine);
+				console.log("digitIndex before : "+digitIndex);
+				console.log("BENAR");
+				setResultAnimationCorrectGlow();
+				roundStageIncrease();
+				initArrayUser();
+				console.log("countCombine after: "+countCombine);
+				console.log("digitIndex after: "+digitIndex);
+				if (roundStage == USER_LEVEL)
+				{
+				  timerPause = true;
+				}
 			}
-		  }
-		  else
-		  {
-			  console.log("SALAH");
-		  }
-		}
-		else
-		{
-		  if (roundStage >= 0)
-		  {
-			  console.log("SALAH 2");
-			  console.log("RoundStage : "+roundStage);
-			  roundStageDecrease();
-		  }
-		  else
-		  if (roundStage < 0)
-		  {
-			  console.log("RoundStage : "+roundStage);
-			  console.log("GAME OVER");
-			  gOver = true;
-			  timerPause = true;
-		  }
+			else
+			{
+				if (roundStage >= 0)
+			  {
+					resetLastGlowTouch(target);
+					console.log("countCombine 2: "+countCombine);
+					console.log("digitIndex 2: "+digitIndex);
+				  console.log("RoundStage : "+roundStage);
+					setResultAnimationWrongGlow();
+				  roundStageDecrease();
+					initArrayUser();
+					console.log("countCombine 3: "+countCombine);
+					console.log("digitIndex 3: "+digitIndex);
+			  }
+			  else
+			  if (roundStage < 0)
+			  {
+				  console.log("RoundStage : "+roundStage);
+				  gOver = true;
+				  timerPause = true;
+			  }
+			}
 		}
 	}
-	
+
 	function mappingInputTouch(stage,shape)
 	{
 	  stage.addChild(shape);
 	  stage.update();
 	}
-	
+
 	function setImg(stage, img, x, y)
 	{
 		stage.addChild(img);
@@ -351,10 +389,10 @@ function GS_Gameplay()
 		img.y = y;
 		stage.update();
 	}
-	
+
 	function countdownTimer(stage)
 	{
-	
+
 		textTimer = new createjs.Text("00:00","75px Hacker","#FFFFFF");
 		textTimer.x = (FAR_ANCHOR) + 60;
 		textTimer.y = (MED_ANCHOR) + 10;
@@ -364,29 +402,29 @@ function GS_Gameplay()
 		mainStage.addChild(finish_containerbox);
 		mainStage.update();
 	}
-	
+
 	function generateDigitCombination()
 	{
 	  var minimum = 0;
 	  var maximum = 9;
-	
+
 	  var inc = 0;
 	  digitCombination = [];
 	  while(inc < 4)
 	  {
 		var randomNumber = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-		
+
 		if(digitCombination.indexOf(randomNumber) == -1)
 			{
 				digitCombination.push(randomNumber);
 				inc++;
 			}
 	  }
-	 
+
 	  console.log(digitCombination.toString());
-	  
+
 	}
-	
+
 	function TimerTick()
 	{
 	  if(timer>0)
@@ -394,17 +432,15 @@ function GS_Gameplay()
 		  //stop timer when user win
 		  if (!timerPause)
 		  {
-			timer--;
-			if((timer/60) >= 10)
-			{
-			  textTimer.text = "00:"+(timer/60).toFixed(0);
-			}
-			else
-			{
-			  textTimer.text = "00:0"+(timer/60).toFixed(0);
-			}
-	
-		  //console.log((timer/60).toFixed(2));
+				timer--;
+				if((timer/60) >= 10)
+				{
+				  textTimer.text = "00:"+(timer/60).toFixed(0);
+				}
+				else
+				{
+				  textTimer.text = "00:0"+(timer/60).toFixed(0);
+				}
 		  }
 		  else
 		  {
@@ -424,10 +460,11 @@ function GS_Gameplay()
 	  else
 	  {
 		//createjs.Ticker.setPaused(true);
+		gOver = true;
 		goToFinish();
 	  }
 	}
-	
+
 	function goToFinish()
 	{
 		mainStage.removeAllEventListeners();

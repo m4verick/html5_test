@@ -55,10 +55,12 @@ function UI_Preload()
 					src: imgPath + "hack_button.png",
 					id: "actButton"
 				},
+				/*
 				{
 					src: imgPath + "currency_icon_large.png",
 					id: "currency"
 				},
+				*/
 				/*,
 				{
 					src: imgPath + "hacker.png",
@@ -152,14 +154,14 @@ function UI_Preload()
 				];
 				break;
 			default:
-				console.log("State not found!");
+				module.writeLog("State not found!");
 		}
 		manifest = tempManifest;
 	}
 	this.callPreload = function()
 	{
 		startPreload();
-		console.log("callPreload state:" + m_currentState);
+		module.writeLog("callPreload state:" + m_currentState);
 	}
 	function startPreload()
 	{
@@ -175,12 +177,12 @@ function UI_Preload()
 
 	function handleFileLoad(event)
 	{
-		//console.log("A file has loaded of type: " + event.item.type);
+		//module.writeLog("A file has loaded of type: " + event.item.type);
 		var bgBounds;
 		//var scaleContainer = module.resize( mainCanvas, 1024, 768);
 		canvasH = mainCanvas.height;
 		canvasW = mainCanvas.width;
-		console.log("handleFileLoad : currentState " + m_currentState);
+		module.writeLog("handleFileLoad : currentState " + m_currentState);
 		switch (m_currentState)
 		{
 			case GAME_STATE_SPLASH:
@@ -226,7 +228,9 @@ function UI_Preload()
 					imgCellPhone.y = (FAR_ANCHOR << 1) + 55;
 					imgCellPhone.scaleX = imgCellPhone.scaleY = 0.5;
 					finish_containerbox.addChild(imgCellPhone);
-				}else
+				}
+				/*
+				else
 				if(event.item.id == "currency")
 				{
 					//create bitmap here
@@ -236,7 +240,9 @@ function UI_Preload()
 					imgCurrency.y = (FAR_ANCHOR << 1) + 85;
 					imgCurrency.scaleX = imgCurrency.scaleY = 1.5;
 					finish_containerbox.addChild(imgCurrency);
-				}/*
+				}*/
+				
+				/*
 				else
 				if(event.item.id == "hacker")
 				{
@@ -279,8 +285,8 @@ function UI_Preload()
 					//to get width and height
 					tempWidthBg = a.width;
 					tempHeightBg = a.height;
-					console.log(tempWidthBg);
-					console.log(tempHeightBg);
+					module.writeLog(tempWidthBg);
+					module.writeLog(tempHeightBg);
 					imgSplash.x = 0;//((canvasW-a.width)/2);
 					finish_containerbox.addChild(imgSplash);
 				}else
@@ -309,7 +315,7 @@ function UI_Preload()
 				else
 				if(event.item.id == "msgBox")
 				{
-					//console.log("-->>Messagebox is loaded");
+					//module.writeLog("-->>Messagebox is loaded");
 					//create bitmap here
 					var imgMsgBox	= new createjs.Bitmap(event.result);
 					var a = imgMsgBox.getBounds();
@@ -338,7 +344,7 @@ function UI_Preload()
 				}
 				break;
 			default:
-				console.log("handleFileLoad error : state not found!");
+				module.writeLog("handleFileLoad error : state not found!");
 		}
 
 
@@ -351,7 +357,7 @@ function UI_Preload()
 
 	function loadError(evt)
 	{
-		console.log("Error!",evt.text);
+		module.writeLog("Error!",evt.text);
 	}
 
 	function handleFileProgress(event)
@@ -361,13 +367,13 @@ function UI_Preload()
 
 	function loadComplete(event)
 	{
-		console.log("Finished Loading Assets");
+		module.writeLog("Finished Loading Assets");
 		finish_containerbox.x = (window.innerWidth - tempWidthBg)/2;
 		main_debug.Update_Game();
 	}
 	this.Init_Builder = function()
 	{
-		console.log("Init_Buidler()");
+		module.writeLog("Init_Buidler()");
 		mainStage = new createjs.Stage(document.getElementById("testCanvas"));
 		mainCanvas = document.getElementById("testCanvas");
 

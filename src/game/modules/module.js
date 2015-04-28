@@ -17,9 +17,17 @@ var textHowTo;
 
 function module()
 {
+	this.writeLog = function(strLog)
+	{
+		if (ENABLE_LOG)
+		{
+			console.log(strLog);
+		}
+	}
+	
 	this.drawString = function(textToDraw, props, color, posX, posY, containerbox, lineW, aligns)
 	{
-		console.log("Draw String");
+		this.writeLog("Draw String");
 		textContent = new createjs.Text(textToDraw, props, color);
 		var w = ( textContent.getMeasuredWidth() ) * textContent.scaleX;
 		var h = ( textContent.getMeasuredHeight() ) * textContent.scaleY;
@@ -107,9 +115,9 @@ function module()
 	this.GetDeviceSize = function()
 	{
 		var gameDiv = document.getElementById(mainCanvas);
-		console.log("module::GetDeviceSize()");
-		console.log("-->>::GetDeviceSize().w = "+gameDiv.offsetWidth);
-		console.log("-->>::GetDeviceSize().h = "+gameDiv.offsetHeight);
+		this.writeLog("module::GetDeviceSize()");
+		this.writeLog("-->>::GetDeviceSize().w = "+gameDiv.offsetWidth);
+		this.writeLog("-->>::GetDeviceSize().h = "+gameDiv.offsetHeight);
 		return {
 			width: gameDiv.offsetWidth,
 			height: gameDiv.offsetHeight

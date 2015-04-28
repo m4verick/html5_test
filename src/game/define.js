@@ -14,7 +14,7 @@
 
 	const VERSION 		= "0.0.1";
 	const SERVER_URL 	= "";
-
+	const ENABLE_LOG	= false;
 	//GAME STATES
 	const	GAME_STATE_SPLASH	=	1<<0;
 	const	GAME_STATE_PLAY		=	1<<1;

@@ -25,7 +25,7 @@ function init() {
     imgMonsterARun.onload = handleImageLoad;
     //imgMonsterARun.onerror = handleImageError;
     imgMonsterARun.src = "assets/images/AdsImageAsset.png";
-	console.log(GAME_COUNTRY);
+	module.writeLog(GAME_COUNTRY);
 }
 
 function reset() {
@@ -75,10 +75,10 @@ function startGame() {
    // bmpAnimation.x = 16;
    // bmpAnimation.y = 32;
 	//bmpAnimation.y = screen_height/2;
-	console.log("screen height = " + screen_height);
-	console.log("bmpAnimation height = " + bmpAnimation.getBounds().height);
-	console.log("bmpAnimation.y = " + bmpAnimation.y);
-	console.log("getBounds()bmpAnimation = " + bmpAnimation.getBounds().height);
+	module.writeLog("screen height = " + screen_height);
+	module.writeLog("bmpAnimation height = " + bmpAnimation.getBounds().height);
+	module.writeLog("bmpAnimation.y = " + bmpAnimation.y);
+	module.writeLog("getBounds()bmpAnimation = " + bmpAnimation.getBounds().height);
 	//module.MoveToCenterY(bmpAnimation, screen_height);
     // have each monster start at a specific frame
     bmpAnimation.currentFrame = 1;
@@ -112,7 +112,7 @@ function gridlines()
 
 //called if there is an error loading the image (usually due to a 404)
 function handleImageError(e) {
-	console.log("Error Loading Image : " + e.target.src);
+	module.writeLog("Error Loading Image : " + e.target.src);
 }
 
 function tick(event) {

@@ -53,7 +53,7 @@ function GS_Finish()
 			fsize 				= "50px Hacker";
 			createjs.Sound.play("sfxCorrect");
 		}
-		console.log("Finish_Init()");
+		module.writeLog("Finish_Init()");
 		module.drawString( finishtxt_msg1 , "25px Hacker", "#ffffff", (FAR_ANCHOR<<1) + MED_ANCHOR , (TOP_ANCHOR << 3) + alignY, finish_containerbox, 250,'center')
 		
 		module.drawString( finishtxt_msg2 , "25px Hacker", "#ffffff", (FAR_ANCHOR<<1) + MED_ANCHOR , (TOP_ANCHOR << 5) - 110, finish_containerbox, 250,'center')
@@ -65,7 +65,7 @@ function GS_Finish()
 
 	this.onButtonClick = function(e)
 	{
-		console.log(" This should exit the game!!");
+		module.writeLog(" This should exit the game!!");
 		createjs.Tween.get(polygonGlow).to({alpha:0.7},300).to({alpha:0.01}).call(onHackGlowFinish);
 	}
 	

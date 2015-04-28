@@ -16,8 +16,8 @@ function main_debug()
 {
 	this.Init_Game = function()
 	{
-		//console.log(TEXT.EN.SPLASH_TEXT_HACK);
-		console.log("Init Game");
+		//module.writeLog(TEXT.EN.SPLASH_TEXT_HACK);
+		module.writeLog("Init Game");
 		if (m_currentState == 0)
 		{
 			setState = GAME_STATE_SPLASH;
@@ -49,29 +49,29 @@ function main_debug()
 	}
 	this.Button_onClick = function (e)
 	{
-		console.log("Button Click");
+		module.writeLog("Button Click");
 		if(m_currentState == GAME_STATE_SPLASH)
 		{
 			GS_Splash.onButtonClick(e);
-			console.log("FINISH Button Click");
+			module.writeLog("FINISH Button Click");
 		}
 		else
 		if(m_currentState == GAME_STATE_PLAY)
 		{
 			GS_Gameplay.onButtonClick(e);
-			console.log("TUTORIAL BOX Button Click");
+			module.writeLog("TUTORIAL BOX Button Click");
 		}
 		else
 		if(m_currentState == GAME_STATE_FINISH)
 		{
 			GS_Finish.onButtonClick(e);
-			console.log("FINISH Button Click");
+			module.writeLog("FINISH Button Click");
 		}
 	}
 	
 	this.showUI = function()
 	{
-		//console.log("Show UI");
+		//module.writeLog("Show UI");
 		mainContainer.addChildAt(finish_containerbox);
 		module.setImg( mainStage, mainContainer, 0, 0 );
 		
@@ -81,7 +81,7 @@ function main_debug()
 		
 	this.Update_Game = function ()
 	{
-		console.log("Update game");
+		module.writeLog("Update game");
 		var tempState = 0;
 		var prevState = 0;
 		
@@ -97,7 +97,7 @@ function main_debug()
 				GS_Finish.GS_Finish_Init();
 				break;
 			default:
-				console.log("Game state not found!!");
+				module.writeLog("Game state not found!!");
 		}
 	}
 }

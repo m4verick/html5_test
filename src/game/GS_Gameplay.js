@@ -77,7 +77,7 @@ function GS_Gameplay()
 
 	this.onButtonClick = function(e)
 	{
-		console.log("This should exit the tutorial box!!");
+		module.writeLog("This should exit the tutorial box!!");
 		this.GS_Gameplay_TutorialHide();
 	}
 	this.GS_Gameplay_TutorialHide = function ()
@@ -320,7 +320,7 @@ function GS_Gameplay()
 	{
 		var target = e.target;
 		var sfxClick_prefix = "sfxClick";
-		console.log("target name : "+target.name);
+		module.writeLog("target name : "+target.name);
 		countCombine++;
 		glowTouch(target);
 		digitIndex++;
@@ -329,19 +329,19 @@ function GS_Gameplay()
 		userTouch[digitIndex] = target.name;
 		if(countCombine == 4)
 		{
-			console.log("countCombine : "+countCombine);
-			console.log("digitIndex : "+digitIndex);
+			module.writeLog("countCombine : "+countCombine);
+			module.writeLog("digitIndex : "+digitIndex);
 			//correct guess
 			if(userTouch.toString() == digitCombination.toString())
 			{
-				console.log("countCombine before : "+countCombine);
-				console.log("digitIndex before : "+digitIndex);
-				console.log("BENAR");
+				module.writeLog("countCombine before : "+countCombine);
+				module.writeLog("digitIndex before : "+digitIndex);
+				module.writeLog("BENAR");
 				setResultAnimationGlow("#01B9A1",true);
 				roundStageIncrease();
 				initArrayUser();
-				console.log("countCombine after: "+countCombine);
-				console.log("digitIndex after: "+digitIndex);
+				module.writeLog("countCombine after: "+countCombine);
+				module.writeLog("digitIndex after: "+digitIndex);
 				if (roundStage == USER_LEVEL)
 				{
 				  timerPause = true;
@@ -352,19 +352,19 @@ function GS_Gameplay()
 				//wrong guess
 				if (roundStage >= 0)
 			  {
-					console.log("countCombine 2: "+countCombine);
-					console.log("digitIndex 2: "+digitIndex);
-					console.log("RoundStage : "+roundStage);
+					module.writeLog("countCombine 2: "+countCombine);
+					module.writeLog("digitIndex 2: "+digitIndex);
+					module.writeLog("RoundStage : "+roundStage);
 					setResultAnimationGlow("#FF0000",false);
 					roundStageDecrease();
 					initArrayUser();
-					console.log("countCombine 3: "+countCombine);
-					console.log("digitIndex 3: "+digitIndex);
+					module.writeLog("countCombine 3: "+countCombine);
+					module.writeLog("digitIndex 3: "+digitIndex);
 				}
 				else
 				if (roundStage < 0)
 				{
-				  console.log("RoundStage : "+roundStage);
+				  module.writeLog("RoundStage : "+roundStage);
 				  gOver = true;
 				  timerPause = true;
 				}
@@ -417,7 +417,7 @@ function GS_Gameplay()
 			}
 	  }
 
-	  console.log(digitCombination.toString());
+	  module.writeLog(digitCombination.toString());
 
 	}
 

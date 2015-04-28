@@ -8,13 +8,13 @@
   | |--fonts
   |--src
     |--3rd
-    | |--js 
+    | |--js
     |--game ... (you are here)
 */
 
 	const VERSION 		= "0.0.1";
 	const SERVER_URL 	= "";
-	
+
 	//GAME STATES
 	const	GAME_STATE_SPLASH	=	1<<0;
 	const	GAME_STATE_TUTORIAL	=	1<<1;
@@ -28,20 +28,20 @@
 	const SIDE_ANCHOR	=	10;
 	const FAR_ANCHOR	=	100;
 	const MED_ANCHOR	=	50;
-	
+
 	var initialXpos = 0;
 	var mainCanvas 	= null;
 	var mainStage	= null;
 	var mainContainer = new createjs.Container(); //main container for game screen
-	
-	var SOUND_FILES = 
+
+	var SOUND_FILES =
 		[
 			{file:	"", 			volume:	1},
 			{file:	"", 			volume:	1},
 			{file:	"",				volume:	1}
 		];
 
-	var COUNTRY	=	
+	var COUNTRY	=
 		{
 			EN: {value: 0, language: 'EN'},
 			US: {value: 1, language: 'EN'},
@@ -51,15 +51,15 @@
 			IT: {value: 5, language: 'IT'},
 			DE: {value: 6, language: 'DE'},
 		};
-	
+
 	var m_unknown_country = false;
-	
+
 	//Text
 	var TEXT={
     EN: {
 			//Message box text
 			SPLASH_TEXT_MSG_1:	'ENTER INTO THE SKIN OF A CREDIT CARD HACKER BY PLAYING A QUICK MINIGAME!',
-			FINISH_TEXT_WIN_MSG_1:	'YOU HAVE HACKED THE CODE BUT VISA HAS NOT VERIFIED YOUR IDENTITY,YOU CANNOT PROCCED',
+			FINISH_TEXT_WIN_MSG_1:	'YOU HAVE HACKED THE CODE BUT VISA HAS NOT VERIFIED YOUR IDENTITY,YOU CANNOT PROCEED',
 			FINISH_TEXT_WIN_MSG_2:	'WITH VISA YOUR TRANSACTION IS ALWAYS SECURED',
 			FINISH_TEXT_LOSE_MSG_1:	'YOU HAVE FAILED!\n VISA SECURITY CAN NOT BE BREACHED',
 			FINISH_TEXT_LOSE_MSG_2:	'TRY AGAIN NEXT TIME!\n TAKE A CLOSER LOOK ON VISA WEBSITE',
@@ -70,22 +70,22 @@
 			FINISH_TEXT_CERTIFIED_2:	'GO TO VISA WEBSITE',
 			SPLASH_TEXT_HACK:		'HACK',
 			GET_TEXT:	'GET 5',
-			
+
         },
     FR: {
-            
+
         },
 	}
-	
+
 	function GetCurrentCountry()
 	{
 		m_unknown_country = false;
-		
+
 		var country = COUNTRY.EN;
 		if(typeof deviceCountry != 'undefined')
 		{
 			var mdeviceCountry = deviceCountry.toUpperCase();
-			
+
 			if(mdeviceCountry == 'US')
 			{
 				country = COUNTRY.US;
@@ -122,8 +122,5 @@
 		}
 		return country;
 	}
-	
+
 	var GAME_COUNTRY               =   GetCurrentCountry();
-
-
-

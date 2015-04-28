@@ -265,11 +265,11 @@ function GS_Gameplay()
 		roundStage--;
 	}
 
-	function AISetCombination()
+	function AISetCombination(lastTouch)
 	{
 		for(var i=0;i<4;i++)
 		{
-			createjs.Tween.get(containerbox.getChildAt(digitCombination[i])).wait(500*(i+1)).to({alpha:0.7},500).to({alpha:0.01});
+			createjs.Tween.get(containerbox.getChildByName(digitCombination[i])).wait(500*(i+1)).to({alpha:0.7},500).to({alpha:0.01});
 		}
 	}
 
@@ -277,8 +277,8 @@ function GS_Gameplay()
 	{
 	  for(var i=0;i<10;i++)
 	  {
-		containerbox.getChildAt(i).alpha = 0.01;
-		console.log("alpha "+i+" : " + containerbox.getChildAt(i).alpha);
+			containerbox.getChildByName(i).alpha = 0.01;
+		console.log("alpha "+i+" : " + containerbox.getChildByName(i).alpha);
 	  }
 	}
 
@@ -296,11 +296,15 @@ function GS_Gameplay()
 
 	function glowTouch(targetName)
 	{
-	  createjs.Tween.get(containerbox.getChildByName(targetName.name)).to({alpha:0.7});//,200).to({alpha:0.01});
+		if(countCombine < 4)
+	  	createjs.Tween.get(containerbox.getChildByName(targetName.name)).to({alpha:0.7});//,200).to({alpha:0.01});
+		else
+			createjs.Tween.get(containerbox.getChildByName(targetName.name)).to({alpha:0.7},200).to({alpha:0.01});
 	}
 
 	function resetLastGlowTouch(targetName)
 	{
+
 		containerbox.getChildByName(targetName.name).alpha = 0.01;
 		console.log("targetName : "+containerbox.getChildByName(targetName.name));
 	}
@@ -333,8 +337,9 @@ function GS_Gameplay()
 		var target = e.target;
 		var sfxClick_prefix = "sfxClick";
 		console.log("target name : "+target.name);
-		glowTouch(target);
+		//glowTouch(target);
 		countCombine++;
+		glowTouch(target);
 		digitIndex++;
 		sfxClick = "sfxClick"+countCombine;
 		createjs.Sound.play(sfxClick);
@@ -345,7 +350,7 @@ function GS_Gameplay()
 			console.log("digitIndex : "+digitIndex);
 			if(userTouch.toString() == digitCombination.toString())
 			{
-				resetLastGlowTouch(target);
+				//resetLastGlowTouch(target);
 				console.log("countCombine before : "+countCombine);
 				console.log("digitIndex before : "+digitIndex);
 				console.log("BENAR");
@@ -363,7 +368,7 @@ function GS_Gameplay()
 			{
 				if (roundStage >= 0)
 			  	{
-					resetLastGlowTouch(target);
+					//resetLastGlowTouch(target);
 					console.log("countCombine 2: "+countCombine);
 					console.log("digitIndex 2: "+digitIndex);
 					console.log("RoundStage : "+roundStage);
@@ -416,7 +421,7 @@ function GS_Gameplay()
 	  var minimum = 0;
 	  var maximum = 9;
 	  var inc = 0;
-				
+
 	  digitCombination = [];
 	  while(inc < 4)
 	  {
